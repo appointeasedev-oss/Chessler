@@ -1,14 +1,5 @@
 [
-  {
-    "id": 1,
-    "eventName": "Best Controller",
-    "image": "/assets/event/upcoming.svg",
-    "images": [],
-    "description": "A competition for hunting the best controller within 1st sem students with preliminary round of roborace followed by pick and place",
-    "joiningUrl": "https://forms.google.com/bestcontroller2025",
-    "date": "2025-09-01",
-    "status": "upcoming"
-  },
+  
   {
     "id": 2,
     "eventName": "BYOT 3.0 2025",

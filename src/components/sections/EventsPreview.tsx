@@ -54,7 +54,7 @@ const EventsPreview = () => {
             Our Events
           </h2>
           <p className="text-xl text-secondary-foreground/80 max-w-2xl mx-auto mb-8">
-            Experience the thrill of competitive robotics through our exciting events
+            Join our tournaments and challenge your skills
           </p>
         </div>
 
