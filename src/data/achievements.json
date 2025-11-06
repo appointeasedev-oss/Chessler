@@ -1,0 +1,408 @@
+[
+  {
+    "id": 1,
+    "eventName": "Technovus 2025",
+    "location": "Jorhat Engineering College (JEC)",
+    "position": "1st",
+    "year": "2025",
+    "images": [
+      "https://i.postimg.cc/GhQX1Swz/IMG-20250329-WA0057.jpg",
+      "https://i.postimg.cc/DwwBfd7h/IMG-20250330-WA0054.jpg",
+      "https://i.postimg.cc/hGJsTDJ3/IMG-20250330-WA0064.jpg",
+      "https://i.postimg.cc/kgYw265b/IMG-20250330-WA0069.jpg",
+      "https://i.postimg.cc/VN3RFxns/IMG-20250330-WA0075.jpg",
+      "https://i.postimg.cc/TwgcNtJV/IMG-20250330-WA0087.jpg",
+      "https://i.postimg.cc/brP971mK/IMG-20250330-WA0130.jpg",
+      "https://i.postimg.cc/XNK8wDJ3/IMG-20250331-WA0042.jpg",
+      "https://i.postimg.cc/3JKZ9C4G/IMG-20250331-WA0046.jpg",
+      "https://i.postimg.cc/X7QkPGdz/IMG-20250401-WA0042.jpg",
+      "https://i.postimg.cc/qvqxHJGM/Whats-App-Image-2025-08-20-at-10-51-58-2b3294c7.jpg"
+    ],
+    "description": "Team Arcelor from JEC won 1st in RoboRace and 2nd in RoboSoccer & Pick n Place at Technovus 2025, JEC's techfest after 6 years."
+  },
+  {
+    "id": 2,
+    "eventName": "Pyrokinesis 2025",
+    "location": "Assam Engineering College (AEC), Guwahati",
+    "position": "3rd",
+    "year": "2025",
+    "images": [
+      "https://i.postimg.cc/FFS6wZHn/Whats-App-Image-2025-08-20-at-13-26-12-cc1eb1ed.jpg",
+      "https://i.postimg.cc/FsQ6vLfF/Whats-App-Image-2025-08-20-at-13-26-13-4a02c76a.jpg",
+      "https://i.postimg.cc/65LmppRr/Whats-App-Image-2025-08-20-at-13-26-13-d0c6d704.jpg"
+    ],
+    "description": "Team ZenNos from JEC won the 3rd prize in Robo Race at Pyrokinesis 2025"
+  },
+  {
+    "id": 1,
+    "eventName": "Techxetra 2024",
+    "location": "Tezpur University, Assam",
+    "position": "2nd",
+    "year": "2024",
+    "images": [
+      "https://i.postimg.cc/13B2J33m/Screenshot-2025-08-20-095838.png",
+      "https://i.postimg.cc/ZKkGqQQS/Screenshot-2025-08-20-095854.png",
+      "https://i.postimg.cc/7YgpJVvT/Screenshot-2025-08-20-095921.png",
+      "https://i.postimg.cc/fRD1c9Zq/Screenshot-2025-08-20-095940.png"
+    ],
+    "description": "Team Arcelor from JEC won the 2nd prize in Robo Soccer at Techxetra 2024"
+  },
+  {
+    "id": 1,
+    "eventName": "Xiworong 2024",
+    "location": "Assam Energy Institute, Sivasagar",
+    "position": "2nd",
+    "year": "2024",
+    "description": "Team Arcelor from JEC won the 2nd prize in Robo Soccer and Robo War at AEI",
+    "images":[
+      "https://i.postimg.cc/J0FS36rb/Whats-App-Image-2025-08-20-at-10-23-44-28d1f3b1.jpg",
+      "https://i.postimg.cc/ZRVGnYXs/Whats-App-Image-2025-08-20-at-10-23-47-64c32fc5.jpg",
+      "https://i.postimg.cc/0jjLwRsk/Whats-App-Image-2025-08-20-at-10-23-49-731d3d9a.jpg"
+    ]
+  },
+  {
+    "id": 1,
+    "eventName": "Prajyukktam 2024",
+    "location": "Assam Don Bosco University, Guwahati",
+    "position": "1st",
+    "year": "2024",
+    "description": "Team Arcelor from JEC won the 1st prize in Robo Race at ABDU, Azara in Guwahati.",
+    "images":[
+      "https://i.postimg.cc/ZKRTr2cy/IMG-20241017-WA0019.jpg",
+      "https://i.postimg.cc/L5y2c3HX/IMG-20241018-WA0005.jpg",
+      "https://i.postimg.cc/QNS8Khp3/IMG-20241018-WA0053.jpg",
+      "https://i.postimg.cc/NfzQbDJC/IMG-20241019-WA0006.jpg",
+      "https://i.postimg.cc/XYB4P5tj/IMG-20241019-WA0008.jpg",
+      "https://i.postimg.cc/xdrnVCSK/IMG-20241019-WA0031.jpg",
+      "https://i.postimg.cc/rpScVk87/IMG-20241019-WA0039.jpg",
+      "https://i.postimg.cc/G2dR95tt/IMG-20241020-WA0006.jpg"
+    ]
+  },
+  {
+    "id": 1,
+    "eventName": "Phoenix 2024",
+    "location": "Jorhat Engineering College (JEC)",
+    "position": "1st",
+    "year": "2024",
+    "description": "Team Arcelor from JEC won the 1st prize in Robo Soccer and 2nd prize in Robo Race.",
+    "images": [
+      "https://i.postimg.cc/WzLyYFRy/IMG-20240323-WA0013.jpg",
+      "https://i.postimg.cc/J0N2frMz/IMG-20240323-WA0025.jpg",
+      "https://i.postimg.cc/fRTrPQFM/IMG-20240323-WA0026.jpg",
+      "https://i.postimg.cc/wTkrFjwW/IMG-20240323-WA0033.jpg",
+      "https://i.postimg.cc/XYHzSDSd/IMG-20240324-WA0003.jpg",
+      "https://i.postimg.cc/N0KPg7BV/IMG-20240324-WA0005.jpg",
+      "https://i.postimg.cc/wMQwWwQt/IMG-20240324-WA0007.jpg",
+      "https://i.postimg.cc/QMvYV9MM/IMG-20240324-WA0021.jpg",
+      "https://i.postimg.cc/7hkBMF08/IMG-20240324-WA0022.jpg",
+      "https://i.postimg.cc/d1dHCs7j/IMG-20240325-WA0045.jpg",
+      "https://i.postimg.cc/mZYp2rWb/IMG20240323143958.jpg",
+      "https://i.postimg.cc/8PwyMnC9/IMG20240323144546.jpg",
+      "https://i.postimg.cc/Yqtn4wtQ/IMG20240323144550.jpg",
+      "https://i.postimg.cc/NGmS94mv/IMG-9446.jpg",
+      "https://i.postimg.cc/15STpqrn/IMG-9456.jpg"
+    ]
+  },
+  {
+    "id": 1,
+    "eventName": "Kshitij 2024",
+    "location": "IIT Kharagpur, West Bengal",
+    "position": "1st",
+    "year": "2024",
+    "images": [
+      "https://i.postimg.cc/rs4kK2TB/Whats-App-Image-2024-09-14-at-13-26-23-85dcf28f.jpg",
+      "https://i.postimg.cc/tRnyrW6B/Whats-App-Image-2024-09-14-at-13-26-23-a7972e86.jpg"
+    ],
+    "description": "Team Arcelor from JEC won the 1st prizes in the Droid Blitz and Embetronix events also managing to reach the final round of the Sand Rover event at IIT Kharagpur."
+  },
+  {
+    "id": 1,
+    "eventName": "Xiworong 2023",
+    "location": "Assam Energy Institute, Sivasagar",
+    "position": "1st",
+    "year": "2023",
+    "description": "Team Arcelor from JEC won the 1st prize in Robo Race and 2nd prizes in the Robo Soccer and Robo War events at AEI",
+    "images": [
+      "https://i.postimg.cc/bvrdr42g/IMG-20231103-WA0011.jpg",
+      "https://i.postimg.cc/k5HGbwQm/IMG-20231103-WA0026.jpg",
+      "https://i.postimg.cc/26B6FvGB/IMG-20231103-WA0027.jpg",
+      "https://i.postimg.cc/9QJrWczz/IMG-20231103-WA0034.jpg",
+      "https://i.postimg.cc/j20j8533/IMG-20231103-WA0038.jpg",
+      "https://i.postimg.cc/dQr3h2Db/IMG-20231103-WA0039.jpg",
+      "https://i.postimg.cc/qqsvWT9J/IMG-20231104-WA0001.jpg"
+    ]
+  },
+  {
+    "id": 9,
+    "eventName": "Technophilia 3.0 2023",
+    "location": "Royal Global University, Guwahati",
+    "position": "2nd",
+    "year": "2023",
+    "images": [
+      "https://i.postimg.cc/G2bYXXBs/IMG-20231012-WA0025.jpg",
+      "https://i.postimg.cc/J0nXLt5r/IMG-20231012-WA0026.jpg",
+      "https://i.postimg.cc/rp1xGBpk/IMG-20231012-WA0029.jpg",
+      "https://i.postimg.cc/26TWMnv9/IMG-20231012-WA0030.jpg",
+      "https://i.postimg.cc/90n7FVLG/IMG-20231012-WA0078.jpg",
+      "https://i.postimg.cc/2jcvxFCV/IMG-20231013-WA0003.jpg",
+      "https://i.postimg.cc/pXmjchdk/IMG-20231013-WA0004.jpg",
+      "https://i.postimg.cc/65FvkW2K/IMG-20231013-WA0038.jpg"
+    ],
+    "description": "Team Arcelor from JEC won the 2nd prizes in the Robo Soccer and Robo Sumo events at RGU"
+  },
+  {
+    "id": 1,
+    "eventName": "Technoxian 7.0 World Robotics Championship 2023",
+    "location": "Noida",
+    "position": "Participant",
+    "year": "2023",
+    "images": [
+      "https://i.postimg.cc/ZntkkyS3/wrc.jpg",
+      "https://i.postimg.cc/FRJtnV2N/wrc2.jpg",
+      "https://i.postimg.cc/xdZDR4p6/wrc2023.jpg"
+    ],
+    "description": "Kaushik Bora, Simanta Samiran Deka and Bhairab Bharali participated in the WRC RC Craft Challenge at Technoxian World Robotics Championship 2023 held at Noida."
+  },
+  {
+    "id": 1,
+    "eventName": "Techkriti 2023",
+    "location": "IIT Kanpur, Uttar Pradesh",
+    "position": "Finalist",
+    "year": "2023",
+    "description": "Mituraj Baishya, Miran Afraz Ullah, Ratnajeet Bhowal and Arnab Jyoti Singha secured 4th position in the Pick n Place Event at Techkriti 2023",
+    "images": [
+      "https://i.postimg.cc/L41RympL/techkriti1.jpg",
+      "https://i.postimg.cc/cCwS6BmX/techkriti2.jpg"
+    ]
+  },
+  {
+    "id": 1,
+    "eventName": "Kshitij 2023",
+    "location": "IIT Kharagpur, West Bengal",
+    "position": "Participant",
+    "year": "2023",
+    "description": "15+ students participated and represented JEC at the national level at Kshitij 2023 at IIT Kharagpur. The students participated in the events Sand Rover, Robowars and Laws of Motion",
+    "images": [
+      "https://i.postimg.cc/mgWvp9wG/kshitij1.jpg",
+      "https://i.postimg.cc/9M0KwYWy/kshitij2.jpg",
+      "https://i.postimg.cc/sgPtk26G/kshitij3.jpg",
+      "https://i.postimg.cc/Jh19MWv6/kshitij4.jpg",
+      "https://i.postimg.cc/DzBRzMK2/kshitij6.jpg"
+    ]
+  },
+  {
+    "id": 1,
+    "eventName": "Tecnoesis 2022",
+    "location": "NIT Silchar, Assam",
+    "position": "1st",
+    "year": "2022",
+    "description": "Team New Era JEC secured 1st position in the Smart City Innovative Project at Technosis 2022",
+    "images": [
+      "https://i.postimg.cc/0jB8JNRy/technoesis.jpg",
+      " https://i.postimg.cc/HWZWN6c1/technoesis-2022.jpg"
+    ]
+  },
+  {
+    "id": 1,
+    "eventName": "Smart India Hackathon, 2022",
+    "position": "1st",
+    "year": "2022",
+    "description": "Manoranjan Sah and his team 'DIGANTA' won the Hardware Edition of NATIONAL MISSION for CLEAN GANGA (NMCG), Ministry of Jal Shakti, at SIH 2022.",
+    "images": [
+      "https://i.postimg.cc/DwDXK2SF/sih2022.jpg"
+    ]
+  },
+  {
+    "id": 1,
+    "eventName": "Technoxian 6.0 World Cup 2022",
+    "location": "Indira Gandhi Stadium Complex, New Delhi ",
+    "position": "1st",
+    "year": "2022",
+    "description": "First position in RC Craft competition in light category won by Ubedul Islam, Nayanjyoti Sarmah and Rahul Das from Team JecRoboworld",
+    "images": [
+      "https://i.postimg.cc/fbtY3VGJ/wrc.jpg",
+      "https://i.postimg.cc/Jzdb4Ndf/wrc-2022.jpg"
+    ]
+  },
+  {
+    "id": 1,
+    "eventName": "Tech Toy 2020 Hackathon",
+    "location": "NIT Silchar, Assam",
+    "position": "1st",
+    "year": "2020",
+    "description": "First position for the category of 'Smart Toy' organized by StartUp Cell, NITS won by Kritartha Gautam.",
+    "images": [
+      "https://i.postimg.cc/3x3GZLP5/techtoy1.jpg",
+      "https://i.postimg.cc/9Q17gdh4/techtoy2.jpg"
+    ]
+  },
+  {
+    "id": 2,
+    "eventName": "Robosoccer - Technosis '20",
+    "location": "NIT Silchar, Assam",
+    "position": "2nd",
+    "year": "2020",
+    "description": "Second prize in Robosoccer competition"
+  },
+  {
+    "id": 1,
+    "eventName": "Roboteaser - Pyrokinesis '20",
+    "location": "Assam Engineering College (AEC)",
+    "position": "2nd",
+    "year": "2020",
+    "description": "Runner-up in Roboteaser event"
+  },
+  {
+    "id": 2,
+    "eventName": "Robosoccer - Technosis '20",
+    "location": "NIT Silchar, Assam",
+    "position": "2nd",
+    "year": "2020",
+    "description": "Second prize in Robosoccer competition"
+  },
+  {
+    "id": 3,
+    "eventName": "B-plan Idea - Meity Tide 2.0",
+    "location": "Tezpur University, Assam",
+    "position": "2nd",
+    "year": "2020",
+    "description": "Secured 2nd prize in B-plan idea competition"
+  },
+  {
+    "id": 4,
+    "eventName": "Smart India Hackathon - Software Edition",
+    "location": "MHRD, India",
+    "position": "Top 4",
+    "year": "2019",
+    "description": "Developed a real-time power outage detection and analysis system under Ministry of Power",
+    "images": [
+      "https://i.postimg.cc/hjB7ZpYq/sih1.jpg",
+      "https://i.postimg.cc/mrMHS08w/sih2.jpg"
+    ]
+  },
+  {
+    "id": 5,
+    "eventName": "Robowar - SUPERNERDS '19",
+    "location": "Guwahati University with CIT",
+    "position": "2nd",
+    "year": "2019",
+    "description": "Runner-up in Robowar competition",
+    "images": [
+      "https://i.postimg.cc/R0RM9dFm/supernerds1.jpg",
+      "https://i.postimg.cc/Qdc8YhZH/supernerds2.jpg",
+      "https://i.postimg.cc/mrRb0JTV/supernerds3.jpg"
+    ]
+  },
+  {
+    "id": 6,
+    "eventName": "Robowar - Technovus '19",
+    "location": "Jorhat Engineering College (JEC)",
+    "position": "2nd",
+    "year": "2019",
+    "description": "Second prize in Robowar competition"
+  },
+  {
+    "id": 7,
+    "eventName": "Abeyaantrix '18",
+    "location": "Jorhat Institute of Science & Technology (JIST)",
+    "position": "1st",
+    "year": "2018",
+    "description": "Winner in Robosoccer competition and 2nd in RoboWar.",
+    "images": [
+      "https://i.postimg.cc/XvznpJw1/Screenshot-2025-08-23-220712.png",
+      "https://i.postimg.cc/XJB4FbLj/Screenshot-2025-08-23-220722.png",
+      "https://i.postimg.cc/x8rY34pK/Screenshot-2025-08-23-220732.png",
+      "https://i.postimg.cc/k54nJ8tt/Screenshot-2025-08-23-220740.png",
+      "https://i.postimg.cc/J7JRzRtK/Screenshot-2025-08-23-220749.png",
+      "https://i.postimg.cc/zXr8L4gN/Screenshot-2025-08-23-220756.png"
+    ]
+  },
+  {
+    "id": 8,
+    "eventName": "Techkriti '19",
+    "location": "IIT Kanpur, Uttar Pradesh",
+    "position": "Showcased",
+    "year": "2019",
+    "description": "Presented a gesture-based bomb defusing UAV model"
+  },
+  {
+    "id": 9,
+    "eventName": "BEL - Ideate to Innovate",
+    "location": "IIT Bombay, Mumbai",
+    "position": "2nd",
+    "year": "2018",
+    "description": "Secured 2nd prize among top 10 teams in Inter Asia competition"
+  },
+  {
+    "id": 10,
+    "eventName": "Human Powered Vehicle Competition",
+    "location": "VIT, Asia-Pacific Zone",
+    "position": "Best Perseverance Award",
+    "year": "2018",
+    "description": "Awarded for perseverance at ASME Human Powered Vehicle Competition",
+    "images": [
+      "https://i.postimg.cc/6qZg660Z/hpv1.jpg",
+      "https://i.postimg.cc/pXN3G8WJ/hpv2.jpg",
+      "https://i.postimg.cc/Df4tP5Tz/hpv3.jpg"
+    ]
+  },
+  {
+    "id": 11,
+    "eventName": "Robosoccer - Pyrokinesis '18",
+    "location": "Assam Engineering College (AEC)",
+    "position": "1st",
+    "year": "2018",
+    "description": "Winner in Robosoccer event at Pyrokinesis"
+  },
+  {
+    "id": 12,
+    "eventName": "DRDO Robotics and Unmanned Systems Exposition",
+    "location": "North East Zonal, India",
+    "position": "1st",
+    "year": "2018",
+    "description": "Winner at North East Zonal Qualifiers for National Level DRDO Exposition"
+  },
+  {
+    "id": 13,
+    "eventName": "Tata Power Future Think",
+    "location": "IIT Bombay, Mumbai",
+    "position": "2nd",
+    "year": "2018",
+    "description": "Secured 2nd prize in problem statement competition"
+  },
+  {
+    "id": 14,
+    "eventName": "Robowar - Pyrokinesis '18",
+    "location": "Assam Engineering College (AEC)",
+    "position": "2nd",
+    "year": "2018",
+    "description": "Runner-up in Robowar competition"
+  },
+  {
+    "id": 15,
+    "eventName": "Robosoccer - Techxetra '16",
+    "location": "Tezpur University, Assam",
+    "position": "2nd",
+    "year": "2016",
+    "description": "Runner-up in Robosoccer event and winner in Robotics rally event at Techxetra 2016",
+    "images": [
+      "https://i.postimg.cc/Jnc2DYX6/techxetra1.jpg",
+      "https://i.postimg.cc/9MjkfHDw/techxetra2.jpg",
+      "https://i.postimg.cc/VvfHj9BY/techxetra3.jpg"
+    ]
+  },
+  {
+    "id": 16,
+    "eventName": "Auxesis '16",
+    "location": "Dibrugarh University, Assam",
+    "position": "1st",
+    "year": "2016",
+    "description": "First prize in 'Survival' Rally Competition and second prize in Amphibian Bot robotics event",
+    "images": [
+      "https://i.postimg.cc/Sxxky8Bb/auxesis-2.jpg",
+      "https://i.postimg.cc/7ZtDbh4G/auxesis-2016.jpg",
+      "https://i.postimg.cc/5tZVqr6f/auxesis3.jpg",
+      "https://i.postimg.cc/8CFGvGky/auxesis4.jpg"
+    ]
+  }
+]

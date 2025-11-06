@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "teamName": "Team Arcelor",
+    "logo": "/assets/logo/team logo/team arcelor logo.png",
+    "image": "/assets/teams/team arcelor.jpg"
+    
+  },
+  {
+    "id": 2,
+    "teamName": "Team ZenNos",
+    "logo": "/assets/logo/team logo/ZenNos logo.jpg",
+    "image": "/assets/teams/team ZenNos.jpg"
+    
+  }
+]
