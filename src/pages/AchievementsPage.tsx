@@ -1,22 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AchievementCard from '@/components/cards/AchievementCard';
 import { ImageModal } from '@/components/ui/ImageModal';
-import achievementsData from '@/data/achievements.json';
+import { supabase } from '@/utils/supabase';
 
 interface Achievement {
   id: number;
-  eventName: string;
-  location?: string;
-  position: string;
-  year: string;
+  event_name: string;
+  position?: string;
+  year?: string;
   description?: string;
   images?: string[];
+  location?: string;
 }
 
 const AchievementsPage = () => {
-  const achievements = achievementsData as Achievement[];
+  const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [selectedAchievement, setSelectedAchievement] = useState<Achievement | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleAchievementClick = (achievement: Achievement) => {
     setSelectedAchievement(achievement);
@@ -28,56 +29,72 @@ const AchievementsPage = () => {
     setSelectedAchievement(null);
   };
 
+  useEffect(() => {
+    const fetchAchievements = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('achievements')
+          .select('*')
+          .order('year', { ascending: false });
 
+        if (error) {
+          throw error;
+        }
+
+        if (data) {
+          setAchievements(data as Achievement[]);
+        }
+      } catch (error) {
+        console.error('Error fetching achievements:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAchievements();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="pt-24 min-h-screen bg-background flex justify-center items-center">
+        <p className="text-xl text-muted-foreground">Loading achievements...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-24 min-h-screen bg-background">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/5 via-transparent to-black/5"></div>
-        <div className="container mx-auto px-4 py-16">
-          <div className="text-center mb-12">
-            <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-4">
-              Our Achievements
-            </h1>
-            <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
-              A testament to our dedication, innovation, and excellence in competitive chess.
-            </p>
-          </div>
+      <div className="container mx-auto px-4 py-12">
+        <div className="text-center mb-16">
+          <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-4">
+            Our Achievements
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-.auto">
+            A showcase of our club's accomplishments and victories.
+          </p>
         </div>
-      </div>
 
-      {/* Achievements Grid */}
-      <div className="container mx-auto px-4 pb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {achievements.map((achievement, index) => (
-            <div
+          {achievements.map((achievement) => (
+            <AchievementCard
               key={achievement.id}
-              className="animate-fade-in-up"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <AchievementCard
-                eventName={achievement.eventName}
-                location={achievement.location}
-                position={achievement.position}
-                year={achievement.year}
-                description={achievement.description}
-                images={achievement.images}
-                onCardClick={() => handleAchievementClick(achievement)}
-              />
-            </div>
+              eventName={achievement.event_name}
+              position={achievement.position}
+              year={achievement.year}
+              description={achievement.description}
+              images={achievement.images}
+              location={achievement.location}
+              onCardClick={() => handleAchievementClick(achievement)}
+            />
           ))}
         </div>
-
-
       </div>
 
-      {/* Modal rendered at page level */}
       <ImageModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         images={selectedAchievement?.images || []}
-        title={selectedAchievement?.eventName || ''}
+        title={selectedAchievement?.event_name || ''}
         description={selectedAchievement?.description}
       />
     </div>

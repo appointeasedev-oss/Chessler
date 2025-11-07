@@ -1,113 +1,83 @@
-import { Trophy, MapPin, Calendar, Award, Star, Images } from 'lucide-react';
+import { Calendar, Award, MapPin, Images } from 'lucide-react';
+import OptimizedImage from '@/components/OptimizedImage';
 
 interface AchievementCardProps {
   eventName: string;
-  location?: string;
-  position: string;
-  year: string;
+  position?: string;
+  year?: string;
   description?: string;
   images?: string[];
+  location?: string;
   onCardClick?: () => void;
 }
 
-const AchievementCard = ({ eventName, location, position, year, description, images, onCardClick }: AchievementCardProps) => {
+const AchievementCard = ({ eventName, position, year, description, images, location, onCardClick }: AchievementCardProps) => {
   const handleCardClick = () => {
     if (images && images.length > 0 && onCardClick) {
       onCardClick();
     }
   };
-  const getPositionStyle = (pos: string) => {
-    if (pos.includes('1st')) {
-      return {
-        bgColor: 'bg-gradient-to-r from-amber-600 to-amber-700',
-        textColor: 'text-white',
-        icon: Trophy
-      };
-    }
-    if (pos.includes('2nd')) {
-      return {
-        bgColor: 'bg-gradient-to-r from-slate-500 to-slate-600',
-        textColor: 'text-white',
-        icon: Award
-      };
-    }
-    if (pos.includes('3rd')) {
-      return {
-        bgColor: 'bg-gradient-to-r from-orange-500 to-orange-600',
-        textColor: 'text-white',
-        icon: Star
-      };
-    }
-    return {
-      bgColor: 'bg-gradient-to-r from-slate-600 to-slate-700',
-      textColor: 'text-white',
-      icon: Award
-    };
-  };
-
-  const positionStyle = getPositionStyle(position);
-  const IconComponent = positionStyle.icon;
 
   return (
-    <>
-      <div
-        className={`group relative overflow-hidden rounded-2xl bg-white/90 backdrop-blur-sm border border-gray-200/50 transition-all duration-500 hover:scale-[1.02] hover:shadow-xl hover:shadow-black/10 hover:bg-white p-6 ${images && images.length > 0 ? 'cursor-pointer' : ''
-          }`}
-        onClick={handleCardClick}
-      >
-        {/* Subtle background pattern */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-50/50 via-transparent to-transparent"></div>
-
-        {/* Position Badge */}
-        <div className="flex items-start justify-between mb-6">
-          <div className={`inline-flex items-center space-x-2 px-4 py-2 rounded-full ${positionStyle.bgColor}`}>
-            <IconComponent className="h-5 w-5 text-white" />
-            <span className="text-sm font-bold text-white">
-              {position}
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            {images && images.length > 0 && (
-              <div className="flex items-center space-x-1 px-2 py-1 bg-blue-100/80 rounded-full backdrop-blur-sm">
-                <Images className="h-3 w-3 text-blue-600" />
-                <span className="text-xs font-medium text-blue-600">{images.length}</span>
+    <div 
+      className={`group relative overflow-hidden rounded-xl bg-card border border-border hover:border-foreground/20 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 h-full flex flex-col ${
+        images && images.length > 0 ? 'cursor-pointer' : ''
+      }`}
+      onClick={handleCardClick}
+    >
+      {images && images.length > 0 && (
+        <div className="aspect-video overflow-hidden relative">
+          <OptimizedImage
+            src={images[0]}
+            alt={eventName}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+          <div className="absolute top-4 right-4 flex gap-2">
+            {images.length > 1 && (
+              <div className="px-2 py-1 bg-black/70 text-white rounded-full text-xs font-medium flex items-center gap-1">
+                <Images className="h-3 w-3" />
+                {images.length}
               </div>
             )}
-            <div className="flex items-center space-x-1 px-3 py-1 bg-gray-100/80 rounded-full backdrop-blur-sm">
-              <Calendar className="h-4 w-4 text-gray-600" />
-              <span className="text-sm font-medium text-gray-600">{year}</span>
-            </div>
           </div>
         </div>
+      )}
 
-        {/* Event Name */}
-        <h3 className="text-xl font-bold text-gray-900 mb-4 leading-tight group-hover:text-gray-800 transition-colors">
-          {eventName}
-        </h3>
-
-        {/* Location */}
-        {location && (
-          <div className="flex items-start space-x-2 mb-4">
-            <MapPin className="h-4 w-4 text-gray-500 flex-shrink-0 mt-0.5" />
-            <span className="text-sm text-gray-600 leading-relaxed">{location}</span>
+      <div className="flex-1 flex flex-col p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-3">
+          <h3 className="font-bold text-lg sm:text-xl text-black group-hover:text-black transition-colors">
+            {eventName}
+          </h3>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {year && (
+              <div className="flex items-center text-sm text-black/70 group-hover:text-black/70 transition-colors">
+                <Calendar className="h-4 w-4 mr-1" />
+                {year}
+              </div>
+            )}
+          </div>
+        </div>
+        
+        {position && (
+          <div className="flex items-center text-sm text-amber-500 font-semibold mb-3">
+            <Award className="h-4 w-4 mr-1.5" />
+            {position}
           </div>
         )}
 
-        {/* Description */}
-        {description && (
-          <p className="text-gray-600 text-sm leading-relaxed">
-            {description}
-          </p>
+        <p className="text-black/60 group-hover:text-black/80 transition-colors flex-1 leading-relaxed text-sm mb-4">
+          {description}
+        </p>
+
+        {location && (
+          <div className="flex items-center text-sm text-black/50 group-hover:text-black/70 transition-colors mt-auto">
+            <MapPin className="h-4 w-4 mr-1.5" />
+            {location}
+          </div>
         )}
-
-        {/* Hover Effect Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-50/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl pointer-events-none" />
-
-        {/* Subtle border glow on hover */}
-        <div className="absolute inset-0 rounded-2xl border border-gray-300/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
       </div>
-
-    </>
+    </div>
   );
 };
 
