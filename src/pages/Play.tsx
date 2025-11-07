@@ -70,6 +70,8 @@ const Play: React.FC = () => {
     const newGame = new Chess();
     setGame(newGame);
     setGameState('playing');
+    setMoveFrom('');
+    setOptionSquares({});
 
     if (boardOrientation === 'black') {
       setThinking(true);
@@ -79,65 +81,68 @@ const Play: React.FC = () => {
   };
 
   function onSquareClick(square: Square) {
-    if (thinking || gameState !== 'playing' || game.isGameOver()) return;
-    if (game.turn() !== boardOrientation[0]) return;
+    if (thinking || gameState !== 'playing' || game.isGameOver() || game.turn() !== boardOrientation[0]) {
+        return;
+    }
 
-    function getMoves(square: Square) {
-      const moves = game.moves({ square, verbose: true });
-      if (moves.length === 0) {
-        return false;
-      }
+    function showMoves(square: Square) {
+        const moves = game.moves({ square, verbose: true });
+        if (moves.length === 0) {
+            setMoveFrom('');
+            setOptionSquares({});
+            return;
+        }
 
-      const newSquares: { [key: string]: any } = {};
-      newSquares[square] = {
-        background: 'rgba(255, 255, 0, 0.4)',
-      };
-      moves.forEach((move) => {
-        newSquares[move.to] = {
-          background:
-            game.get(move.to) && game.get(move.to).color !== game.get(square).color
-              ? 'radial-gradient(circle, rgba(0,0,0,0.4) 85%, transparent 85%)'
-              : 'radial-gradient(circle, rgba(0,0,0,0.4) 25%, transparent 25%)',
-        };
-      });
-      setOptionSquares(newSquares);
-      return true;
+        setMoveFrom(square);
+        const newSquares: { [key: string]: any } = {};
+        newSquares[square] = { background: 'rgba(255, 255, 0, 0.4)' };
+        moves.forEach((move) => {
+            newSquares[move.to] = {
+                background:
+                    game.get(move.to) && game.get(move.to).color !== game.get(square).color
+                        ? 'radial-gradient(circle, rgba(0,0,0,0.4) 85%, transparent 85%)'
+                        : 'radial-gradient(circle, rgba(0,0,0,0.4) 25%, transparent 25%)',
+            };
+        });
+        setOptionSquares(newSquares);
+    }
+
+    const piece = game.get(square);
+
+    if (moveFrom) {
+        if (square === moveFrom) {
+            setMoveFrom('');
+            setOptionSquares({});
+            return;
+        }
+        if (piece && piece.color === game.turn()) {
+            showMoves(square);
+            return;
+        }
     }
 
     if (!moveFrom) {
-      const hasMoves = getMoves(square);
-      if (hasMoves) setMoveFrom(square);
-      return;
-    }
+        if (piece && piece.color === game.turn()) {
+            showMoves(square);
+        }
+    } else {
+        const gameCopy = new Chess(game.fen());
+        const move = gameCopy.move({ from: moveFrom, to: square, promotion: 'q' });
 
-    const gameCopy = new Chess(game.fen());
-    const move = gameCopy.move({
-      from: moveFrom,
-      to: square,
-      promotion: 'q', // always promote to a queen for simplicity
-    });
+        if (move) {
+            setGame(gameCopy);
+            if (!gameCopy.isGameOver()) {
+                setThinking(true);
+                engine?.postMessage(`position fen ${gameCopy.fen()}`);
+                engine?.postMessage('go depth 15');
+            }
+        }
 
-    if (move === null) {
-      const hasMoves = getMoves(square);
-      if (hasMoves) setMoveFrom(square);
-      else {
         setMoveFrom('');
         setOptionSquares({});
-      }
-      return;
     }
+}
 
-    setGame(gameCopy);
-
-    if (!gameCopy.isGameOver()) {
-      setThinking(true);
-      engine?.postMessage(`position fen ${gameCopy.fen()}`);
-      engine?.postMessage('go depth 15');
-    }
-
-    setMoveFrom('');
-    setOptionSquares({});
-  }
 
   const onDrop = (sourceSquare: Square, targetSquare: Square): boolean => {
     if (thinking || gameState !== 'playing' || game.isGameOver()) return false;
