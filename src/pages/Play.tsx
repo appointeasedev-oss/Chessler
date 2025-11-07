@@ -20,9 +20,17 @@ const Play: React.FC = () => {
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
   const [thinking, setThinking] = useState(false);
   const [engineReady, setEngineReady] = useState(false);
+  const [engineName, setEngineName] = useState<'stockfish' | 'lc0' | 'komodo' | 'dragon'>('stockfish');
 
   useEffect(() => {
-    const worker = new StockfishWorker();
+    let worker: Worker;
+    if (engineName === 'stockfish') {
+      worker = new StockfishWorker();
+    } else {
+      // You would need to add the other engine workers here
+      // For now, we'll just use Stockfish as a placeholder
+      worker = new StockfishWorker();
+    }
     setEngine(worker);
 
     worker.onmessage = (event: MessageEvent<string>) => {
@@ -47,7 +55,7 @@ const Play: React.FC = () => {
       worker.postMessage('quit');
       worker.terminate();
     };
-  }, []);
+  }, [engineName]);
 
   const handleStartGame = () => {
     if (!engineReady) return;
@@ -101,15 +109,32 @@ const Play: React.FC = () => {
         </AnimatedDiv>
         <AnimatedDiv className="bg-card p-8 rounded-lg shadow-lg w-full max-w-md" delay={200}>
           <div className="mb-6">
+            <label className="block text-lg font-medium text-muted-foreground mb-3">Chess Engine</label>
+            <div className="grid grid-cols-2 gap-3">
+              {['stockfish', 'lc0', 'komodo', 'dragon'].map((eng) => (
+                <button
+                  key={eng}
+                  onClick={() => setEngineName(eng as any)}
+                  className={`w-full p-3 rounded-lg font-semibold transition-all duration-300 ${
+                    engineName === eng ? 'bg-primary text-primary-foreground shadow-lg scale-105' : 'bg-secondary hover:bg-accent'
+                  }`}
+                >
+                  {eng.charAt(0).toUpperCase() + eng.slice(1)}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="mb-6">
             <label className="block text-lg font-medium text-muted-foreground mb-3">Difficulty</label>
             <div className="flex justify-between gap-3">
               {['easy', 'medium', 'hard'].map((level) => (
-                <button 
+                <button
                   key={level}
                   onClick={() => setDifficulty(level as any)}
                   className={`w-full p-3 rounded-lg font-semibold transition-all duration-300 ${
                     difficulty === level ? 'bg-primary text-primary-foreground shadow-lg scale-105' : 'bg-secondary hover:bg-accent'
-                  }`}>
+                  }`}
+                >
                   {level.charAt(0).toUpperCase() + level.slice(1)}
                 </button>
               ))}
@@ -130,8 +155,8 @@ const Play: React.FC = () => {
               </button>
             </div>
           </div>
-          <button 
-            onClick={handleStartGame} 
+          <button
+            onClick={handleStartGame}
             disabled={!engineReady}
             className="w-full p-4 text-xl font-bold rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground transition-colors disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
