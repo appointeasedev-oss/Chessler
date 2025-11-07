@@ -7,7 +7,6 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import HomePage from "./pages/HomePage";
 import EventsPage from "./pages/EventsPage";
-import TeamPage from "./pages/TeamPage";
 import AchievementsPage from "./pages/AchievementsPage";
 import TimelinePage from "./pages/TimelinePage";
 import GalleryPage from "./pages/GalleryPage";
@@ -19,6 +18,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import { useLenis } from "./hooks/useLenis";
 import { useEffect, useState } from "react";
 import Loader from "./components/ui/Loader";
+import Play from "./pages/Play";
 
 const queryClient = new QueryClient();
 
@@ -87,7 +87,7 @@ const App = () => {
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/events" element={<EventsPage />} />
-                <Route path="/members" element={<TeamPage />} />
+                <Route path="/play" element={<Play />} />
                 <Route path="/achievements" element={<AchievementsPage />} />
                 <Route path="/timeline" element={<TimelinePage />} />
                 <Route path="/gallery" element={<GalleryPage />} />

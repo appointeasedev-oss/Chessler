@@ -13,75 +13,44 @@ const Loader: React.FC<LoaderProps> = ({ visible }) => {
   if (!visible) return null;
   return (
     <div className="loader-overlay" style={{ width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}>
+      <style>{`
+        .svg-elem-1 {
+          animation: slide-in-bottom 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        }
+        .svg-elem-2 {
+          animation: slide-in-bottom 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s both;
+        }
+        .svg-elem-3 {
+          animation: slide-in-bottom 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s both;
+        }
+        .svg-elem-4 {
+          animation: slide-in-bottom 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s both;
+        }
+
+        @keyframes slide-in-bottom {
+          0% {
+            transform: translateY(50px);
+            opacity: 0;
+          }
+          100% {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+      `}</style>
       <svg
         key={svgKey}
-        fill="#000000"
-        version="1.1"
-        id="Layer_1"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
-        viewBox="0 0 512 512"
-        xmlSpace="preserve"
         width="120"
         height="120"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
         style={{ maxWidth: '80vw', maxHeight: '80vh' }}
       >
-        <g>
-          <g>
-            <rect
-              x="40.421"
-              y="431.158"
-              width="363.789"
-              height="80.842"
-              className="svg-elem-1"
-            ></rect>
-          </g>
-        </g>
-        <g>
-          <g>
-            <path
-              d="M206.395,274.766c-14.137,28.316-43.155,47.935-76.749,48.56l61.792,67.41h121.263L206.395,274.766z"
-              className="svg-elem-2"
-            ></path>
-          </g>
-        </g>
-        <g>
-          <g>
-            <path
-              d="M204.345,66.762l-74.698,81.49c33.595,0.624,62.614,20.243,76.749,48.56l59.846-65.288
-            C235.5,122.972,211.53,98.045,204.345,66.762z"
-              className="svg-elem-3"
-            ></path>
-          </g>
-        </g>
-        <g>
-          <g>
-            <path
-              d="M128,188.632c-26.003,0-47.158,21.155-47.158,47.158s21.155,47.158,47.158,47.158s47.158-21.155,47.158-47.158
-            S154.003,188.632,128,188.632z"
-              className="svg-elem-4"
-            ></path>
-          </g>
-        </g>
-        <g>
-          <g>
-            <path
-              d="M289.684,0c-26.003,0-47.158,21.155-47.158,47.158s21.155,47.158,47.158,47.158s47.158-21.155,47.158-47.158
-            S315.687,0,289.684,0z"
-              className="svg-elem-5"
-            ></path>
-          </g>
-        </g>
-        <g>
-          <g>
-            <path
-              d="M413.106,182.5l-56.992-78.366c-8.829,10.279-19.983,18.503-32.656,23.821l46.188,63.51
-            c-19.634,11.785-32.803,33.28-32.803,57.798v53.895h40.421v-53.895c0-14.859,12.089-26.947,26.947-26.947
-            c14.859,0,26.947,12.089,26.947,26.947v53.895h40.421v-53.895C471.579,215.133,446.061,186.868,413.106,182.5z"
-              className="svg-elem-6"
-            ></path>
-          </g>
-        </g>
+        <path className="svg-elem-1" d="M12 2C11.4477 2 11 2.44772 11 3V3.5C11 4.32843 10.3284 5 9.5 5C8.67157 5 8 4.32843 8 3.5V3C8 2.44772 7.55228 2 7 2C6.44772 2 6 2.44772 6 3V3.5C6 5.433 7.567 7 9.5 7H14.5C16.433 7 18 5.433 18 3.5V3C18 2.44772 17.5523 2 17 2C16.4477 2 16 2.44772 16 3V3.5C16 4.32843 15.3284 5 14.5 5C13.6716 5 13 4.32843 13 3.5V3C13 2.44772 12.5523 2 12 2Z" fill="#000000"/>
+        <path className="svg-elem-2" d="M6 8C6 9.10457 6.89543 10 8 10H16C17.1046 10 18 9.10457 18 8V7H6V8Z" fill="#000000"/>
+        <path className="svg-elem-3" d="M7 11H17V18C17 19.1046 16.1046 20 15 20H9C7.89543 20 7 19.1046 7 18V11Z" fill="#000000"/>
+        <path className="svg-elem-4" d="M5 21H19V22H5V21Z" fill="#000000"/>
       </svg>
     </div>
   );
