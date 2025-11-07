@@ -108,7 +108,7 @@ const Play: React.FC = () => {
                   key={level}
                   onClick={() => setDifficulty(level as any)}
                   className={`w-full p-3 rounded-lg font-semibold transition-all duration-300 ${
-                    difficulty === level ? 'bg-primary text-primary-foreground shadow-lg scale-105' : 'bg-muted hover:bg-accent'
+                    difficulty === level ? 'bg-primary text-primary-foreground shadow-lg scale-105' : 'bg-secondary hover:bg-accent'
                   }`}>
                   {level.charAt(0).toUpperCase() + level.slice(1)}
                 </button>
@@ -119,12 +119,12 @@ const Play: React.FC = () => {
             <label className="block text-lg font-medium text-muted-foreground mb-3">Play As</label>
             <div className="flex justify-between gap-3">
               <button onClick={() => setBoardOrientation('white')} className={`w-full p-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
-                boardOrientation === 'white' ? 'bg-primary text-primary-foreground shadow-lg scale-105' : 'bg-muted hover:bg-accent'
+                boardOrientation === 'white' ? 'bg-primary text-primary-foreground shadow-lg scale-105' : 'bg-secondary hover:bg-accent'
               }`}>
                 <FaChessPawn/> White
               </button>
               <button onClick={() => setBoardOrientation('black')} className={`w-full p-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
-                boardOrientation === 'black' ? 'bg-primary text-primary-foreground shadow-lg scale-105' : 'bg-muted hover:bg-accent'
+                boardOrientation === 'black' ? 'bg-primary text-primary-foreground shadow-lg scale-105' : 'bg-secondary hover:bg-accent'
               }`}>
                 <FaCrown/> Black
               </button>
@@ -133,7 +133,7 @@ const Play: React.FC = () => {
           <button 
             onClick={handleStartGame} 
             disabled={!engineReady}
-            className="w-full p-4 text-xl font-bold rounded-lg bg-green-600 hover:bg-green-700 text-white transition-colors disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full p-4 text-xl font-bold rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground transition-colors disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {engineReady ? 'Start Game' : <><FaCog className="animate-spin mr-2"/> Loading Engine...</>}
           </button>
@@ -176,14 +176,14 @@ const Play: React.FC = () => {
             <div className="flex flex-col gap-4 mt-4">
                 <button
                     onClick={resetGame}
-                    className="flex items-center justify-center gap-2 p-3 rounded-lg bg-secondary text-secondary-foreground hover:bg-secondary/90 transition-colors"
+                    className="flex items-center justify-center gap-2 p-3 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
                 >
                     <FaCog />
                     <span>New Game</span>
                 </button>
                 <button
                     onClick={() => setBoardOrientation(boardOrientation === 'white' ? 'black' : 'white')}
-                    className="flex items-center justify-center gap-2 p-3 rounded-lg bg-muted hover:bg-accent transition-colors"
+                    className="flex items-center justify-center gap-2 p-3 rounded-lg bg-secondary hover:bg-accent transition-colors"
                     disabled={thinking}
                 >
                     <FaFlipboard />
