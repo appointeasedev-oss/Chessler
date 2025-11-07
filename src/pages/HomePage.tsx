@@ -15,9 +15,16 @@ const FounderSection = () => {
           </h2>
         </div>
         <div className="flex flex-col md:flex-row items-center justify-center">
-          <div className="md:w-1/2 text-center md:text-left md:pr-12">
+          <div className="md:w-1/3 flex justify-center mb-8 md:mb-0">
+            <img
+              src="/assets/20210503_212250_0000.png"
+              alt="Founder Shubham Saini"
+              className="rounded-full w-64 h-64 object-cover"
+            />
+          </div>
+          <div className="md:w-2/3 text-center md:text-left md:pl-12">
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Meet our founder, Shubham Saini, an International Fide Rated Chess Player and AICF-CIS Trainer. With 13 years of playing experience and 6 years of coaching, he has won numerous district, state, and university level tournaments. He is passionate about nurturing young talent and has coached many students to compete at the national level.
+              I’m an AICF Chess Trainer (CIS - Chess in School Program)and International FIDE-rated player with over 9 years of coaching experience and 18 years of passion for the game. I’ve won multiple district, state, and university titles, competed at the national level, and even participated in the South Asian Chess Championship 2016. Over the years, I’ve trained many young talents, helping several of them shine at district, state, and national tournaments. My goal is to inspire every student to think deeply, play confidently, and enjoy the beauty of chess.
             </p>
           </div>
         </div>

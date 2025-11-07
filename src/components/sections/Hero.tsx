@@ -77,7 +77,7 @@ const Hero = () => {
       />
 
       {/* Centered Content Layout */}
-      <div className="relative z-10 w-full min-h-screen flex items-center pt-32">
+      <div className="relative z-10 w-full min-h-screen flex items-center pt-28">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center justify-center text-center space-y-8 max-w-4xl mx-auto">
             {/* Main Heading */}
@@ -105,12 +105,26 @@ const Hero = () => {
                 className="bg-white/90 hover:bg-white/100 text-black hover:scale-105 transition-all duration-300"
               >
                 <Link
-                  to="https://docs.google.com/forms/d/e/1FAIpQLScAB45gIWtHeZaKy_arQZqQkrJCdUAhNUwyaSBClkNyEnPgKw/viewform?usp=header"
+                  to="https://forms.gle/JoDkJv79wY7yvzfV8"
                   className="cursor-pointer"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   Join The Club
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                className="bg-primary hover:bg-primary/90 text-white hover:scale-105 transition-all duration-300"
+              >
+                <Link
+                  to="https://forms.gle/GdHu7QJNtTr9wfMx7"
+                  className="cursor-pointer"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Take a Demo Class
                 </Link>
               </Button>
             </div>
