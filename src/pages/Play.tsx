@@ -92,7 +92,7 @@ const Play: React.FC = () => {
 
   if (gameState === 'setup') {
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 pt-28 md:pt-32">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 pt-32 md:pt-36">
         <AnimatedDiv className="text-center mb-12">
           <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-4">Play vs Computer</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -143,7 +143,7 @@ const Play: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col items-center p-4 pt-28 md:pt-32 animate-fadeIn">
+    <div className="min-h-screen bg-background text-foreground flex flex-col items-center p-4 pt-32 md:pt-40 animate-fadeIn">
       <div className="w-full max-w-5xl mx-auto flex flex-col lg:flex-row gap-8">
         <div className="flex-grow flex flex-col items-center gap-4">
           <div className="w-full max-w-lg aspect-square relative shadow-2xl rounded-lg overflow-hidden">
