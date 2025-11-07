@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 import EventCard from '@/components/cards/EventCard';
 import { ImageModal } from '@/components/ui/ImageModal';
+import { supabase } from '@/utils/supabase';
 
 interface Event {
   id: number;
-  eventName: string;
+  event_name: string;
   image?: string;
   images?: string[];
   description: string;
-  joiningUrl?: string;
+  joining_url?: string;
   date?: string;
   status?: string;
 }
@@ -17,6 +18,7 @@ const EventsPage = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleEventClick = (event: Event) => {
     setSelectedEvent(event);
@@ -29,40 +31,67 @@ const EventsPage = () => {
   };
 
   useEffect(() => {
-    import('@/data/events.json').then((module) => {
-      setEvents(module.default);
-    });
+    const fetchEvents = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('events')
+          .select('*')
+          .order('date', { ascending: false });
+
+        if (error) {
+          throw error;
+        }
+
+        if (data) {
+          setEvents(data as Event[]);
+        }
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
   }, []);
 
+  const registrationsOpenEvents = events.filter(event => event.status === 'Registrations open');
   const upcomingEvents = events.filter(event => event.status === 'upcoming');
-  const ongoingEvents = events.filter(event => event.status === 'ongoing');
-  const pastEvents = events.filter(event => event.status === 'completed');
+  const pastEvents = events.filter(event => event.status === 'completed' || event.status === 'Completed');
+
+  if (loading) {
+    return (
+      <div className="pt-24 min-h-screen bg-background flex justify-center items-center">
+        <p className="text-xl text-muted-foreground">Loading events...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-24 min-h-screen bg-background">
       <div className="container mx-auto px-4 py-12">
         <div className="text-center mb-16">
           <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-4">
-            Our Events
+            Chess Club Events
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Join us in exciting robotics competitions and educational events
+            Join us for thrilling tournaments, casual chess meetups, and educational workshops.
           </p>
         </div>
 
-        {/* Ongoing Events */}
-        {ongoingEvents.length > 0 && (
+        {/* Registrations Open Events */}
+        {registrationsOpenEvents.length > 0 && (
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-foreground mb-8">Ongoing Events</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-8">Registrations Open</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {ongoingEvents.map((event) => (
+              {registrationsOpenEvents.map((event) => (
                 <EventCard
                   key={event.id}
-                  eventName={event.eventName}
+                  eventName={event.event_name}
                   image={event.image}
                   images={event.images}
                   description={event.description}
-                  joiningUrl={event.joiningUrl}
+                  joiningUrl={event.joining_url}
                   date={event.date}
                   status={event.status}
                   onCardClick={() => handleEventClick(event)}
@@ -80,11 +109,11 @@ const EventsPage = () => {
               {upcomingEvents.map((event) => (
                 <EventCard
                   key={event.id}
-                  eventName={event.eventName}
+                  eventName={event.event_name}
                   image={event.image}
                   images={event.images}
                   description={event.description}
-                  joiningUrl={event.joiningUrl}
+                  joiningUrl={event.joining_url}
                   date={event.date}
                   status={event.status}
                   onCardClick={() => handleEventClick(event)}
@@ -102,11 +131,11 @@ const EventsPage = () => {
               {pastEvents.map((event) => (
                 <EventCard
                   key={event.id}
-                  eventName={event.eventName}
+                  eventName={event.event_name}
                   image={event.image}
                   images={event.images}
                   description={event.description}
-                  joiningUrl={event.joiningUrl}
+                  joiningUrl={event.joining_url}
                   date={event.date}
                   status={event.status}
                   onCardClick={() => handleEventClick(event)}
@@ -122,7 +151,7 @@ const EventsPage = () => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         images={selectedEvent?.images || []}
-        title={selectedEvent?.eventName || ''}
+        title={selectedEvent?.event_name || ''}
         description={selectedEvent?.description}
       />
     </div>

@@ -21,11 +21,13 @@ const EventCard = ({ eventName, image, images, description, joiningUrl, date, st
   };
   const getStatusConfig = (status?: string) => {
     switch (status) {
-      case 'ongoing':
-        return { label: 'Ongoing', className: 'bg-gray-500 text-white' };
+      case 'Registrations open':
+        return { label: 'Registrations Open', className: 'bg-blue-500 text-white' };
       case 'upcoming':
         return { label: 'Upcoming', className: 'bg-gray-500 text-white' };
       case 'completed':
+        return { label: 'Completed', className: 'bg-gray-500 text-white' };
+      case 'Completed':
         return { label: 'Completed', className: 'bg-gray-500 text-white' };
       default:
         return { label: 'Event', className: 'bg-muted text-muted-foreground' };
@@ -33,13 +35,13 @@ const EventCard = ({ eventName, image, images, description, joiningUrl, date, st
   };
 
   const statusConfig = getStatusConfig(status);
-  
+
   // Check if we should show image section based purely on whether image src is provided
   const shouldShowImage = image && image.trim() !== '';
 
   return (
     <>
-      <div 
+      <div
         className={`group relative overflow-hidden rounded-xl bg-card border border-border hover:border-foreground/20 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 h-full flex flex-col ${
           images && images.length > 0 ? 'cursor-pointer' : ''
         }`}
@@ -69,7 +71,7 @@ const EventCard = ({ eventName, image, images, description, joiningUrl, date, st
           </div>
         </div>
       )}
-      
+
       {/* Content section with improved spacing for events without images */}
       <div className={`flex-1 flex flex-col ${!shouldShowImage ? 'p-4 sm:p-6 lg:p-8' : 'p-4 sm:p-6'}`}>
         <div className={`flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 ${!shouldShowImage ? 'mb-4 sm:mb-6' : 'mb-3'}`}>
@@ -106,29 +108,19 @@ const EventCard = ({ eventName, image, images, description, joiningUrl, date, st
             )}
           </div>
         </div>
-        
+
         <p className={`text-black/60 group-hover:text-black/80 transition-colors flex-1 ${
           !shouldShowImage
-            ? 'leading-relaxed text-sm sm:text-base mb-0' 
+            ? 'leading-relaxed text-sm sm:text-base mb-0'
             : 'leading-relaxed text-sm mb-4'
         }`}>
           {description}
         </p>
-        
-        {joiningUrl && joiningUrl !== '#' && (
+
+        {joiningUrl && joiningUrl !== '#' && status === 'Registrations open' && (
           <div className="flex justify-start mt-4 sm:mt-6">
-            {status === 'upcoming' ? (
-              <Button 
-                disabled
-                className="opacity-60 cursor-not-allowed bg-black text-white text-sm w-full sm:w-auto"
-              >
-                <ExternalLink className="h-4 w-4 mr-2" />
-                <span className="hidden sm:inline">Registration Opens Soon</span>
-                <span className="sm:hidden">Opens Soon</span>
-              </Button>
-            ) : (
-              <Button 
-                asChild 
+              <Button
+                asChild
                 className="group-hover:scale-105 transition-transform duration-300 bg-black text-white hover:text-white hover:bg-black text-sm w-full sm:w-auto"
               >
                 <a href={joiningUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center cursor-pointer">
@@ -137,7 +129,6 @@ const EventCard = ({ eventName, image, images, description, joiningUrl, date, st
                   <span className="sm:hidden">Register</span>
                 </a>
               </Button>
-            )}
           </div>
         )}
       </div>
