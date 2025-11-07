@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import OptimizedImage from '@/components/OptimizedImage';
 import { useImagePreloader } from '@/hooks/useImagePreloader';
+import { supabase } from '@/utils/supabase';
 
 interface GalleryImage {
   id: number;
@@ -10,24 +11,40 @@ interface GalleryImage {
 const GalleryPage = () => {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
   const [touchStart, setTouchStart] = useState<number>(0);
   const [touchEnd, setTouchEnd] = useState<number>(0);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // Define aspect ratios for Pinterest-style masonry layout
   const aspectRatios = [0.6, 0.8, 1.0, 1.2, 0.7, 0.9, 1.1, 0.65, 1.3, 0.75, 1.4, 0.85];
 
   useEffect(() => {
-    import('@/data/gallery.json').then((module) => {
-      setImages(module.default);
-    });
+    const fetchGallery = async () => {
+      try {
+        setLoading(true);
+        const { data, error } = await supabase.from('gallery').select('*').limit(20);
+
+        if (error) {
+          throw error;
+        }
+
+        if (data) {
+          setImages(data);
+        }
+      } catch (error) {
+        console.error('Error fetching gallery images:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGallery();
   }, []);
 
-  // Preload images for better performance
   const imageUrls = images.map(item => item.image);
-  const { isImageLoaded } = useImagePreloader({ 
+  useImagePreloader({ 
     images: imageUrls, 
-    priority: 12 // Preload first 12 images
+    priority: 12
   });
 
   const openModal = (index: number) => {
@@ -52,7 +69,6 @@ const GalleryPage = () => {
     }
   };
 
-  // Touch handlers for swipe
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(0);
     setTouchStart(e.targetTouches[0].clientX);
@@ -76,7 +92,6 @@ const GalleryPage = () => {
     }
   };
 
-  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (selectedImageIndex === null) return;
@@ -90,6 +105,14 @@ const GalleryPage = () => {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [selectedImageIndex]);
 
+  if (loading) {
+    return (
+      <div className="pt-24 min-h-screen bg-background text-white flex justify-center items-center">
+        <p className="text-2xl">Loading gallery...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="pt-24 min-h-screen bg-background text-white">
       <div className="px-4 py-8">
@@ -102,7 +125,6 @@ const GalleryPage = () => {
           </p>
         </div>
 
-        {/* Pinterest-style Masonry Grid with varied heights */}
         <div className="columns-2 sm:columns-3 lg:columns-4 xl:columns-5 gap-3 sm:gap-4 max-w-7xl mx-auto">
           {images.map((item, index) => (
             <div
@@ -110,7 +132,6 @@ const GalleryPage = () => {
               className="break-inside-avoid mb-3 sm:mb-4 group cursor-pointer"
               onClick={() => openModal(index)}
               style={{ 
-                // Add randomized margin for natural Pinterest flow
                 marginBottom: `${8 + (index % 4) * 6}px` 
               }}
             >
@@ -118,7 +139,6 @@ const GalleryPage = () => {
                 <div 
                   className="w-full relative overflow-hidden"
                   style={{
-                    // Apply varied aspect ratios to create Pinterest masonry effect
                     aspectRatio: aspectRatios[index % aspectRatios.length]
                   }}
                 >
@@ -130,7 +150,6 @@ const GalleryPage = () => {
                   />
                 </div>
                 
-                {/* Hover overlay */}
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
                     <div className="bg-white text-gray-900 px-3 py-1.5 rounded-full text-sm font-medium shadow-lg">
@@ -143,7 +162,6 @@ const GalleryPage = () => {
           ))}
         </div>
 
-        {/* Enhanced Image Modal with Swipe */}
         {selectedImageIndex !== null && (
           <div 
             className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center"
@@ -156,7 +174,6 @@ const GalleryPage = () => {
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
-              {/* Navigation Arrows */}
               {selectedImageIndex > 0 && (
                 <button
                   onClick={(e) => { e.stopPropagation(); prevImage(); }}
@@ -179,7 +196,6 @@ const GalleryPage = () => {
                 </button>
               )}
 
-              {/* Close Button */}
               <button
                 onClick={(e) => { e.stopPropagation(); closeModal(); }}
                 className="absolute top-4 right-4 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full p-2 transition-all z-10"
@@ -189,19 +205,16 @@ const GalleryPage = () => {
                 </svg>
               </button>
 
-              {/* Image Counter */}
               <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm z-10">
                 {selectedImageIndex + 1} / {images.length}
               </div>
 
-              {/* Main Image */}
               <OptimizedImage
                 src={images[selectedImageIndex].image}
                 alt={`Gallery image ${images[selectedImageIndex].id}`}
                 className="max-w-full max-h-full object-contain rounded-lg select-none"
                 loading="eager"
               />
-              {/* Dot Indicators */}
               <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
                 {images.map((_, index) => (
                   <button
