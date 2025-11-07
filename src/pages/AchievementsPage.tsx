@@ -69,7 +69,7 @@ const AchievementsPage = () => {
           <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-4">
             Our Achievements
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-.auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             A showcase of our club's accomplishments and victories.
           </p>
         </div>
