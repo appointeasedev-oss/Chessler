@@ -41,7 +41,7 @@ const AchievementsPage = () => {
               Our Achievements
             </h1>
             <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
-              A testament to our dedication, innovation, and excellence in competitive robotics across the nation
+              A testament to our dedication, innovation, and excellence in competitive chess.
             </p>
           </div>
         </div>
