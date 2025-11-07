@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Chess, Move } from 'chess.js';
+import { Chess, Move, Square } from 'chess.js';
 import { Chessboard } from 'react-chessboard';
 import StockfishWorker from 'stockfish.js/stockfish.js?worker';
 import { FaFlipboard, FaCog, FaBrain, FaChessPawn, FaCrown } from 'react-icons/fa';
@@ -21,6 +21,8 @@ const Play: React.FC = () => {
   const [thinking, setThinking] = useState(false);
   const [engineReady, setEngineReady] = useState(false);
   const [engineName, setEngineName] = useState<'stockfish' | 'lc0' | 'komodo' | 'dragon'>('stockfish');
+  const [moveFrom, setMoveFrom] = useState('');
+  const [optionSquares, setOptionSquares] = useState({});
 
   useEffect(() => {
     let worker: Worker;
@@ -76,7 +78,68 @@ const Play: React.FC = () => {
     }
   };
 
-  const onDrop = (sourceSquare: string, targetSquare: string): boolean => {
+  function onSquareClick(square: Square) {
+    if (thinking || gameState !== 'playing' || game.isGameOver()) return;
+    if (game.turn() !== boardOrientation[0]) return;
+
+    function getMoves(square: Square) {
+      const moves = game.moves({ square, verbose: true });
+      if (moves.length === 0) {
+        return false;
+      }
+
+      const newSquares: { [key: string]: any } = {};
+      newSquares[square] = {
+        background: 'rgba(255, 255, 0, 0.4)',
+      };
+      moves.forEach((move) => {
+        newSquares[move.to] = {
+          background:
+            game.get(move.to) && game.get(move.to).color !== game.get(square).color
+              ? 'radial-gradient(circle, rgba(0,0,0,0.4) 85%, transparent 85%)'
+              : 'radial-gradient(circle, rgba(0,0,0,0.4) 25%, transparent 25%)',
+        };
+      });
+      setOptionSquares(newSquares);
+      return true;
+    }
+
+    if (!moveFrom) {
+      const hasMoves = getMoves(square);
+      if (hasMoves) setMoveFrom(square);
+      return;
+    }
+
+    const gameCopy = new Chess(game.fen());
+    const move = gameCopy.move({
+      from: moveFrom,
+      to: square,
+      promotion: 'q', // always promote to a queen for simplicity
+    });
+
+    if (move === null) {
+      const hasMoves = getMoves(square);
+      if (hasMoves) setMoveFrom(square);
+      else {
+        setMoveFrom('');
+        setOptionSquares({});
+      }
+      return;
+    }
+
+    setGame(gameCopy);
+
+    if (!gameCopy.isGameOver()) {
+      setThinking(true);
+      engine?.postMessage(`position fen ${gameCopy.fen()}`);
+      engine?.postMessage('go depth 15');
+    }
+
+    setMoveFrom('');
+    setOptionSquares({});
+  }
+
+  const onDrop = (sourceSquare: Square, targetSquare: Square): boolean => {
     if (thinking || gameState !== 'playing' || game.isGameOver()) return false;
 
     const gameCopy = new Chess(game.fen());
@@ -84,6 +147,9 @@ const Play: React.FC = () => {
 
     if (move === null) return false;
     setGame(gameCopy);
+
+    setMoveFrom('');
+    setOptionSquares({});
 
     if (!gameCopy.isGameOver()) {
       setThinking(true);
@@ -96,6 +162,8 @@ const Play: React.FC = () => {
   const resetGame = () => {
     setGameState('setup');
     setGame(new Chess());
+    setMoveFrom('');
+    setOptionSquares({});
   };
 
   if (gameState === 'setup') {
@@ -176,6 +244,8 @@ const Play: React.FC = () => {
               id="PlayVsStockfish"
               position={game.fen()}
               onPieceDrop={onDrop}
+              onSquareClick={onSquareClick}
+              customSquareStyles={optionSquares}
               boardOrientation={boardOrientation}
               arePiecesDraggable={!thinking && !game.isGameOver() && game.turn() === boardOrientation[0]}
               customDarkSquareStyle={{ backgroundColor: '#769656' }}
