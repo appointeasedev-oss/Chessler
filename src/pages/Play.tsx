@@ -2,22 +2,23 @@
 import React, { useState, useEffect } from 'react';
 import { Chess, Move } from 'chess.js';
 import { Chessboard } from 'react-chessboard';
-import stockfish from 'stockfish.js';
+import StockfishWorker from 'stockfish.js/stockfish.js?worker';
 
 const Play: React.FC = () => {
   const [game, setGame] = useState(new Chess());
-  const [engine, setEngine] = useState<any>(null);
+  const [engine, setEngine] = useState<Worker | null>(null);
   const [boardOrientation, setBoardOrientation] = useState<'white' | 'black'>('white');
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
   const [thinking, setThinking] = useState(false);
   const [engineReady, setEngineReady] = useState(false);
 
   useEffect(() => {
-    const sf = stockfish();
-    setEngine(sf);
+    const worker = new StockfishWorker();
+    setEngine(worker);
 
-    sf.onmessage = (event: any) => {
-      const message = typeof event === 'string' ? event : event.data;
+    worker.onmessage = (event: MessageEvent<string>) => {
+      const message = event.data;
+
       if (message.startsWith('bestmove')) {
         const bestMove = message.split(' ')[1];
         setGame((g) => {
@@ -29,26 +30,28 @@ const Play: React.FC = () => {
         });
         setThinking(false);
       } else if (message === 'readyok') {
+        console.log('Stockfish is ready');
         setEngineReady(true);
       }
     };
 
-    sf.postMessage('uci');
-    sf.postMessage('isready');
+    worker.postMessage('uci');
+    worker.postMessage('isready');
 
     return () => {
-      sf.postMessage('quit');
+      worker.postMessage('quit');
+      worker.terminate();
     };
   }, []);
 
   useEffect(() => {
-    if (engine) {
+    if (engineReady && engine) {
       let skillLevel = '10';
       if (difficulty === 'easy') skillLevel = '5';
       if (difficulty === 'hard') skillLevel = '20';
       engine.postMessage(`setoption name Skill Level value ${skillLevel}`);
     }
-  }, [engine, difficulty]);
+  }, [engine, engineReady, difficulty]);
 
   const onDrop = (sourceSquare: string, targetSquare: string): boolean => {
     if (thinking || !engineReady) return false;
@@ -64,11 +67,13 @@ const Play: React.FC = () => {
 
     setGame(gameCopy);
 
-    if (!gameCopy.isGameOver()) {
-      setThinking(true);
-      engine?.postMessage(`position fen ${gameCopy.fen()}`);
-      engine?.postMessage('go depth 15');
-    }
+    setTimeout(() => {
+      if (!gameCopy.isGameOver() && engine) {
+        setThinking(true);
+        engine.postMessage(`position fen ${gameCopy.fen()}`);
+        engine.postMessage('go depth 15');
+      }
+    }, 250);
 
     return true;
   };
@@ -76,7 +81,8 @@ const Play: React.FC = () => {
   const startNewGame = () => {
     const newGame = new Chess();
     setGame(newGame);
-    if (boardOrientation === 'black' && engine) {
+    setThinking(false);
+    if (boardOrientation === 'black' && engineReady && engine) {
       setThinking(true);
       engine.postMessage(`position fen ${newGame.fen()}`);
       engine.postMessage('go depth 15');
@@ -122,6 +128,7 @@ const Play: React.FC = () => {
 
       <div style={{ width: 'clamp(300px, 80vw, 600px)', position: 'relative' }}>
         <Chessboard
+          id="PlayVsStockfish"
           position={game.fen()}
           onPieceDrop={onDrop}
           boardOrientation={boardOrientation}
