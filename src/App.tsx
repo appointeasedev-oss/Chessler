@@ -10,7 +10,6 @@ import EventsPage from "./pages/EventsPage";
 import AchievementsPage from "./pages/AchievementsPage";
 import TimelinePage from "./pages/TimelinePage";
 import GalleryPage from "./pages/GalleryPage";
-import AlumniPage from "./pages/AlumniPage";
 import TutorialsPage from "./pages/TutorialsPage";
 import AboutPage from "./pages/AboutPage";
 import NotFound from "./pages/NotFound";
@@ -91,7 +90,6 @@ const App = () => {
                 <Route path="/achievements" element={<AchievementsPage />} />
                 <Route path="/timeline" element={<TimelinePage />} />
                 <Route path="/gallery" element={<GalleryPage />} />
-                <Route path="/alumni" element={<AlumniPage />} />
                 <Route path="/tutorials" element={<TutorialsPage />} />
                 <Route path="/about" element={<AboutPage />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

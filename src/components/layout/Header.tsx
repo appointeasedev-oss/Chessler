@@ -62,7 +62,6 @@ const Header = () => {
     { name: "Achievements", path: "/achievements" },
     { name: "Timeline", path: "/timeline" },
     { name: "Gallery", path: "/gallery" },
-    { name: "Alumni", path: "/alumni" },
     { name: "Tutorials", path: "/tutorials" },
     { name: "About", path: "/about" },
   ];

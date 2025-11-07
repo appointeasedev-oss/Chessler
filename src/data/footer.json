@@ -16,7 +16,6 @@
     { "name": "Members", "path": "/members" },
     { "name": "Achievements", "path": "/achievements" },
     { "name": "Gallery", "path": "/gallery" },
-    { "name": "Alumni", "path": "/alumni" },
     { "name": "Tutorials", "path": "/tutorials" },
     { "name": "Timeline", "path": "/timeline" }
   ],
