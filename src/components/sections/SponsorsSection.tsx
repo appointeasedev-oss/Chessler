@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { supabase } from '@/utils/supabase';
 
 interface Sponsor {
   id: number;
@@ -9,12 +10,50 @@ interface Sponsor {
 
 const SponsorsSection = () => {
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    import('@/data/sponsors.json').then((module) => {
-      setSponsors(module.default);
-    });
+    const fetchSponsors = async () => {
+      try {
+        setLoading(true);
+        const { data, error } = await supabase.from('sponsors').select('*');
+
+        if (error) {
+          throw error;
+        }
+
+        if (data) {
+          setSponsors(data);
+        }
+      } catch (error) {
+        console.error('Error fetching sponsors:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSponsors();
   }, []);
+
+  if (loading) {
+    return (
+      <section className="pb-40 bg-black text-white overflow-hidden">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              Our Sponsors
+            </h2>
+            <p className="text-xl max-w-2xl mx-auto">
+              Proudly supported by industry leaders who believe in our vision
+            </p>
+          </div>
+          <div className="flex justify-center items-center h-24">
+            <p className="text-xl text-white">Loading sponsors...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="pb-40 bg-black text-white overflow-hidden">
@@ -35,6 +74,7 @@ const SponsorsSection = () => {
             {[...sponsors, ...sponsors, ...sponsors].map((sponsor, index) => (
               <a
                 key={`${sponsor.id}-${index}`}
+                href={sponsor.website || '#'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-shrink-0 group"
