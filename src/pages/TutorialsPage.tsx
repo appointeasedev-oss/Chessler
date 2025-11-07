@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ExternalLink, Youtube, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { supabase } from '@/utils/supabase';
 
 interface Tutorial {
   id: number;
@@ -20,16 +21,37 @@ interface Channel {
 const TutorialsPage = () => {
   const [tutorials, setTutorials] = useState<Tutorial[]>([]);
   const [channels, setChannels] = useState<Channel[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([
-      import('@/data/tutorials.json'),
-      import('@/data/channels.json'),
-    ]).then(([tutorialsModule, channelsModule]) => {
-      setTutorials(tutorialsModule.default);
-      setChannels(channelsModule.default);
-    });
+    const fetchTutorialsAndChannels = async () => {
+      try {
+        setLoading(true);
+        const { data: tutorialsData, error: tutorialsError } = await supabase.from('tutorials').select('*');
+        if (tutorialsError) throw tutorialsError;
+
+        const { data: channelsData, error: channelsError } = await supabase.from('channels').select('*');
+        if (channelsError) throw channelsError;
+
+        setTutorials(tutorialsData || []);
+        setChannels(channelsData || []);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTutorialsAndChannels();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="pt-24 min-h-screen bg-background flex justify-center items-center">
+        <p className="text-2xl text-white">Loading tutorials and resources...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-24 min-h-screen bg-background">
@@ -39,7 +61,7 @@ const TutorialsPage = () => {
             Tutorials & Resources
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Learn chess through comprehensive tutorials, videos, and software tools
+            Learn and grow with our collection of tutorials, videos, and resources
           </p>
         </div>
 
