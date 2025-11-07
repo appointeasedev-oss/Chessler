@@ -17,31 +17,17 @@ interface Channel {
   channelLink: string;
 }
 
-interface Software {
-  name: string;
-  description: string;
-}
-
-interface SoftwareData {
-  design: Software[];
-  simulation: Software[];
-  advanced: Software[];
-}
-
 const TutorialsPage = () => {
   const [tutorials, setTutorials] = useState<Tutorial[]>([]);
   const [channels, setChannels] = useState<Channel[]>([]);
-  const [softwares, setSoftwares] = useState<SoftwareData | null>(null);
 
   useEffect(() => {
     Promise.all([
       import('@/data/tutorials.json'),
       import('@/data/channels.json'),
-      import('@/data/softwares.json')
-    ]).then(([tutorialsModule, channelsModule, softwaresModule]) => {
+    ]).then(([tutorialsModule, channelsModule]) => {
       setTutorials(tutorialsModule.default);
       setChannels(channelsModule.default);
-      setSoftwares(softwaresModule.default);
     });
   }, []);
 
@@ -50,10 +36,10 @@ const TutorialsPage = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="text-center mb-16">
           <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-4">
-            Tutorials & Resources
+            Chess Club
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Learn robotics through comprehensive tutorials, videos, and software tools
+            Learn chess through comprehensive tutorials, videos, and software tools
           </p>
         </div>
 
@@ -135,37 +121,6 @@ const TutorialsPage = () => {
             ))}
           </div>
         </section>
-
-        {/* Software List */}
-        {softwares && (
-          <section>
-            <h2 className="text-3xl font-bold text-foreground mb-8">Robotics Software</h2>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {Object.entries(softwares).map(([category, softwareList]) => (
-                <div
-                  key={category}
-                  className="bg-card border border-border rounded-xl p-6 hover-glow transition-all duration-300"
-                >
-                  <h3 className="text-xl font-bold text-black mb-4 capitalize">
-                    {category}
-                  </h3>
-                  <div className="space-y-4">
-                    {softwareList.map((software, index) => (
-                      <div key={index} className="border-b border-border/50 pb-3 last:border-b-0">
-                        <h4 className="font-semibold text-black mb-1">
-                          {software.name}
-                        </h4>
-                        <p className="text-sm text-black/60">
-                          {software.description}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
       </div>
     </div>
   );
