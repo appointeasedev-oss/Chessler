@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { supabase } from '@/utils/supabase';
 import { Calendar, Trophy, Lightbulb, Star, Award, Zap, Target, Rocket, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -25,24 +26,55 @@ const TimelineSection = ({
   className = "pt-20 bg-black text-white pb-40"
 }: TimelineSectionProps) => {
   const [events, setEvents] = useState<TimelineEvent[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    import('@/data/timeline.json').then((module) => {
-      const allEvents = module.default;
-      setEvents(maxEvents ? allEvents.slice(0, maxEvents) : allEvents);
-    });
+    const fetchTimelineEvents = async () => {
+      try {
+        setLoading(true);
+        let query = supabase
+          .from('timeline')
+          .select('*')
+          .order('year', { ascending: false })
+          .order('id', { ascending: false });
+
+        if (maxEvents) {
+          query = query.limit(maxEvents);
+        }
+
+        const { data, error } = await query;
+
+        if (error) {
+          throw error;
+        }
+
+        if (data) {
+          const formattedEvents = data.map(event => ({
+            ...event,
+            eventName: event.event_name
+          }));
+          setEvents(formattedEvents);
+        }
+      } catch (error) {
+        console.error('Error fetching timeline events:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTimelineEvents();
   }, [maxEvents]);
 
   const getDateColor = (index: number) => {
     const colors = [
-      'bg-orange-500', // Orange
-      'bg-green-500',  // Green
-      'bg-purple-500', // Purple
-      'bg-blue-500',   // Blue
-      'bg-red-500',    // Red
-      'bg-indigo-500', // Indigo
-      'bg-pink-500',   // Pink
-      'bg-teal-500',   // Teal
+      'bg-orange-500',
+      'bg-green-500',
+      'bg-purple-500',
+      'bg-blue-500',
+      'bg-red-500',
+      'bg-indigo-500',
+      'bg-pink-500',
+      'bg-teal-500',
     ];
     return colors[index % colors.length];
   };
@@ -52,12 +84,20 @@ const TimelineSection = ({
     return colors[index % colors.length];
   };
 
-
-
   const getCheckpointIcon = (index: number) => {
     const icons = [Calendar, Trophy, Lightbulb, Star, Award, Zap, Target, Rocket];
     return icons[index % icons.length];
   };
+
+  if (loading) {
+    return (
+      <section className={className}>
+        <div className="container mx-auto px-4 flex justify-center items-center h-64">
+          <p className="text-xl text-white">Loading timeline...</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className={className}>
@@ -71,7 +111,6 @@ const TimelineSection = ({
         )}
 
         <div className="max-w-7xl mx-auto relative">
-          {/* Central timeline line */}
           <div className="absolute left-1/2 transform -translate-x-0.5 top-0 bottom-0 w-1 bg-gray-400 hidden md:block" />
 
           {events.map((event, index) => {
@@ -79,7 +118,6 @@ const TimelineSection = ({
             
             return (
               <div key={event.id} className="relative mb-16 hidden md:block">
-                {/* Checkpoint icon on central timeline */}
                 <div className="absolute left-1/2 transform -translate-x-1/2 top-8 z-20 hidden md:block">
                   <div
                     className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-4 border-white"
@@ -90,17 +128,14 @@ const TimelineSection = ({
                 </div>
 
                 <div className="flex items-start">
-                  {/* Left side content (for even indices) */}
                   <div className="w-1/2 pr-8 flex flex-col items-end">
                     {index % 2 === 0 && (
                       <>
-                        {/* Date badge */}
                         <div className="mb-6 w-full max-w-lg">
                           <div className={`${getDateColor(index)} text-white px-6 py-5 rounded-full text-center font-bold relative shadow-lg w-full`}>
                             <div className="text-xl font-semibold whitespace-nowrap">
                               {event.year}
                             </div>
-                            {/* Speech bubble arrow pointing right */}
                             <div
                               className="absolute top-1/2 transform -translate-y-1/2 right-0 translate-x-full w-0 h-0"
                               style={{
@@ -112,7 +147,6 @@ const TimelineSection = ({
                           </div>
                         </div>
 
-                        {/* Content card */}
                         <div className="bg-gray-100 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 w-full max-w-lg">
                           <div className="p-8">
                             <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">
@@ -136,17 +170,14 @@ const TimelineSection = ({
                     )}
                   </div>
 
-                  {/* Right side content (for odd indices) */}
                   <div className="w-1/2 pl-8 flex flex-col items-start">
                     {index % 2 === 1 && (
                       <>
-                        {/* Date badge */}
                         <div className="mb-6 w-full max-w-lg">
                           <div className={`${getDateColor(index)} text-white px-6 py-5 rounded-full text-center font-bold relative shadow-lg w-full`}>
                             <div className="text-xl font-semibold whitespace-nowrap">
                               {event.year}
                             </div>
-                            {/* Speech bubble arrow pointing left */}
                             <div
                               className="absolute top-1/2 transform -translate-y-1/2 left-0 -translate-x-full w-0 h-0"
                               style={{
@@ -158,7 +189,6 @@ const TimelineSection = ({
                           </div>
                         </div>
 
-                        {/* Content card */}
                         <div className="bg-gray-100 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 w-full max-w-lg">
                           <div className="p-8">
                             <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">
@@ -186,7 +216,6 @@ const TimelineSection = ({
             );
           })}
 
-          {/* Mobile layout */}
           {events.map((event, index) => {
             
             return (
@@ -224,7 +253,6 @@ const TimelineSection = ({
         </div>
 
         
-{/* View Full Timeline Button - Only show when maxEvents is specified */}
 {maxEvents && (
   <div className="text-center mt-14">
     <Link
