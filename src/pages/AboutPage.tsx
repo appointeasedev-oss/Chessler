@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { supabase } from '@/utils/supabase';
 
 interface AboutData {
   title: string;
@@ -11,14 +12,48 @@ interface AboutData {
 
 const AboutPage = () => {
   const [aboutData, setAboutData] = useState<AboutData | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    import('@/data/about.json').then((module) => {
-      setAboutData(module.default);
-    });
+    const fetchAboutData = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('about')
+          .select('*')
+          .single();
+
+        if (error) {
+          throw error;
+        }
+
+        if (data) {
+          setAboutData(data as AboutData);
+        }
+      } catch (error) {
+        console.error('Error fetching about data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAboutData();
   }, []);
 
-  if (!aboutData) return null;
+  if (loading) {
+    return (
+      <div className="pt-24 min-h-screen bg-background flex justify-center items-center">
+        <p className="text-xl text-muted-foreground">Loading...</p>
+      </div>
+    );
+  }
+
+  if (!aboutData) {
+    return (
+      <div className="pt-24 min-h-screen bg-background flex justify-center items-center">
+        <p className="text-xl text-muted-foreground">Could not load about information.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-24 min-h-screen bg-background">
@@ -28,7 +63,7 @@ const AboutPage = () => {
             {aboutData.title}
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Our story, vision, and commitment to robotics excellence
+            Our story, vision, and commitment to chess excellence
           </p>
         </div>
 
