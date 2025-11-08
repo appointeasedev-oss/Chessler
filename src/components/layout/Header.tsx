@@ -60,7 +60,7 @@ const Header = () => {
     { name: "Events", path: "/events" },
     { name: "Play Vs Computer", path: "/play" },
     { name: "Achievements", path: "/achievements" },
-    { name: "Timeline", path: "/timeline" },
+    { name: "Our Star Players", path: "/star-players" },
     { name: "Gallery", path: "/gallery" },
     { name: "Tutorials", path: "/tutorials" },
     { name: "About", path: "/about" },

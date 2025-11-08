@@ -83,10 +83,8 @@ const Hero = () => {
             {/* Main Heading */}
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight cursor-default">
               <div
-                className="text-primary drop-shadow-2xl"
+                className="text-primary drop-shadow-2xl font-shrikhand"
                 style={{
-                  fontFamily: "Montserrat, sans-serif",
-                  fontWeight: "800",
                   textShadow: "0 4px 24px rgba(0,0,0,0.95), 0 1.5px 0 #000"
                 }}
               >

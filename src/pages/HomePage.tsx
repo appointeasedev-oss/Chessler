@@ -1,6 +1,6 @@
 import Hero from "@/components/sections/Hero";
 import EventsPreview from "@/components/sections/EventsPreview";
-import TimelineSection from "@/components/sections/TimelineSection";
+import OurStarPlayers from "@/components/sections/OurStarPlayers";
 import SponsorsSection from "@/components/sections/SponsorsSection";
 
 const FounderSection = () => {
@@ -15,9 +15,9 @@ const FounderSection = () => {
         <div className="flex flex-col md:flex-row items-center justify-center">
           <div className="md:w-1/3 flex justify-center mb-8 md:mb-0">
             <img
-              src="/assets/20210503_212250_0000.png"
+              src="/assets/IMG-20251108-WA0001.jpg"
               alt="Founder Shubham Saini"
-              className="rounded-full w-64 h-64 object-cover"
+              className="rounded-full w-64 h-64 object-cover object-top"
             />
           </div>
           <div className="md:w-2/3 text-center md:text-left md:pl-12">
@@ -37,7 +37,7 @@ const HomePage = () => {
       <Hero />
       <FounderSection />
       <EventsPreview />
-      <TimelineSection maxEvents={3} />
+      <OurStarPlayers maxEvents={3} />
       <SponsorsSection />
     </div>
   );

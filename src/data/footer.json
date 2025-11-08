@@ -17,7 +17,7 @@
     { "name": "Achievements", "path": "/achievements" },
     { "name": "Gallery", "path": "/gallery" },
     { "name": "Tutorials", "path": "/tutorials" },
-    { "name": "Timeline", "path": "/timeline" }
+    { "name": "Star Players", "path": "/star-players" }
   ],
   "socialLinks": [
     { "name": "Facebook", "url": "https://www.facebook.com/ChesslerClub/", "icon": "facebook" },

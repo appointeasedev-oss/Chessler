@@ -8,7 +8,7 @@ import Footer from "./components/layout/Footer";
 import HomePage from "./pages/HomePage";
 import EventsPage from "./pages/EventsPage";
 import AchievementsPage from "./pages/AchievementsPage";
-import TimelinePage from "./pages/TimelinePage";
+import StarPlayersPage from "./pages/StarPlayersPage";
 import GalleryPage from "./pages/GalleryPage";
 import TutorialsPage from "./pages/TutorialsPage";
 import AboutPage from "./pages/AboutPage";
@@ -88,7 +88,7 @@ const App = () => {
                 <Route path="/events" element={<EventsPage />} />
                 <Route path="/play" element={<Play />} />
                 <Route path="/achievements" element={<AchievementsPage />} />
-                <Route path="/timeline" element={<TimelinePage />} />
+                <Route path="/star-players" element={<StarPlayersPage />} />
                 <Route path="/gallery" element={<GalleryPage />} />
                 <Route path="/tutorials" element={<TutorialsPage />} />
                 <Route path="/about" element={<AboutPage />} />
