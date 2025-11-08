@@ -11,7 +11,7 @@ const Hero = () => {
   useEffect(() => {
     let mounted = true;
     const img = new Image();
-    img.src = "/assets/il_600x600.4904002459_c7do.avif";
+    img.src = "/assets/file_000000001fec72078015ff0057f7abed (1).png";
     img.onload = () => {
       if (mounted) setBgLoaded(true);
     };
@@ -46,7 +46,7 @@ const Hero = () => {
           inset: 0,
           zIndex: 0,
           backgroundImage: bgLoaded
-            ? "url('/assets/il_600x600.4904002459_c7do.avif')"
+            ? "url('/assets/file_000000001fec72078015ff0057f7abed (1).png')"
             : `url('${BLUR_BG}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -65,7 +65,7 @@ const Hero = () => {
           position: "absolute",
           inset: 0,
           zIndex: 1,
-          backgroundImage: bgLoaded ? "url('/assets/il_600x600.4904002459_c7do.avif')" : `url('${BLUR_BG}')`,
+          backgroundImage: bgLoaded ? "url('/assets/file_000000001fec72078015ff0057f7abed (1).png')" : `url('${BLUR_BG}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",

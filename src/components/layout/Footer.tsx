@@ -20,7 +20,7 @@ const Footer = () => {
               <div className="p-2 rounded-lg bg-background/10">
                 <img src="/assets/Chessler/OIP.webp" alt="Chessler Chess Club" className="h-10 w-10" />
               </div>
-              <span className="text-xl font-bold">Chessler Chess Club</span>
+              <span className="text-xl font-bold">Chessler Chess Club | Academy</span>
             </div>
             <p className=" mb-4 max-w-md">
               {footerData.description}

@@ -2,9 +2,9 @@
   "logo": {
     "image": "/assets/Chessler/OIP.webp",
     "alt": "Chessler Chess Club Logo",
-    "title": "Chessler Chess Club"
+    "title": "Chessler Chess Club | Academy"
   },
-  "description": "If you begin to learn The Chess then this time will be perfect time to start The Chess Game. Because \"Now or Never\"",
+  "description": "The way of learning.....",
   "contact": {
     "address": "Jhotwara Industrial Area, Jaipur",
     "email": "chesslerclub@gmail.com",
@@ -17,7 +17,8 @@
     { "name": "Gallery", "path": "/gallery" },
     { "name": "Tutorials", "path": "/tutorials" },
     { "name": "Star Players", "path": "/star-players" },
-    { "name": "Play Vs Computer", "path": "/play" }
+    { "name": "Play Vs Computer", "path": "/play" },
+    { "name": "Academy", "path": "/academy" }
   ],
   "socialLinks": [
     { "name": "Facebook", "url": "https://www.facebook.com/ChesslerClub/", "icon": "facebook" },
@@ -26,7 +27,7 @@
     { "name": "Email", "url": "mailto:chesslerclub@gmail.com", "icon": "email" }
   ],
   "copyright": {
-    "text": "Chessler Chess Club. All rights reserved.",
+    "text": "Chessler Chess Club | Academy. All rights reserved.",
     "showYear": true
   }
 }
