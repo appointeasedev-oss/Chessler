@@ -13,11 +13,11 @@
   "navigation": [
     { "name": "About", "path": "/about" },
     { "name": "Events", "path": "/events" },
-    { "name": "Members", "path": "/members" },
     { "name": "Achievements", "path": "/achievements" },
     { "name": "Gallery", "path": "/gallery" },
     { "name": "Tutorials", "path": "/tutorials" },
-    { "name": "Star Players", "path": "/star-players" }
+    { "name": "Star Players", "path": "/star-players" },
+    { "name": "Play Vs Computer", "path": "/play" }
   ],
   "socialLinks": [
     { "name": "Facebook", "url": "https://www.facebook.com/ChesslerClub/", "icon": "facebook" },

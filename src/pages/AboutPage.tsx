@@ -1,116 +1,55 @@
-import { useEffect, useState } from 'react';
-import { supabase } from '@/utils/supabase';
 
-interface AboutData {
-  title: string;
-  history: string[];
-  images: Array<{
-    url: string;
-    caption: string;
-  }>;
-}
+import aboutData from '@/data/about.json';
+import { CheckCircle } from 'lucide-react';
 
 const AboutPage = () => {
-  const [aboutData, setAboutData] = useState<AboutData | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchAboutData = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('about')
-          .select('*')
-          .single();
-
-        if (error) {
-          throw error;
-        }
-
-        if (data) {
-          setAboutData(data as AboutData);
-        }
-      } catch (error) {
-        console.error('Error fetching about data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAboutData();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="pt-24 min-h-screen bg-background flex justify-center items-center">
-        <p className="text-xl text-muted-foreground">Loading...</p>
-      </div>
-    );
-  }
-
-  if (!aboutData) {
-    return (
-      <div className="pt-24 min-h-screen bg-background flex justify-center items-center">
-        <p className="text-xl text-muted-foreground">Could not load about information.</p>
-      </div>
-    );
-  }
-
-  const filteredImages = aboutData.images.filter(
-    (image) =>
-      image.caption !== "RoboWorld lab and workspace" &&
-      image.caption !== "Annual club gathering and project showcase"
-  );
-
   return (
-    <div className="pt-24 min-h-screen bg-background">
+    <div className="pt-24 min-h-screen bg-background text-white">
       <div className="container mx-auto px-4 py-12">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-4">
-            {aboutData.title}
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Our story, vision, and commitment to chess excellence
-          </p>
+        <header className="text-center mb-12">
+          <h1 className="text-5xl font-bold mb-4">{aboutData.title}</h1>
+          <p className="text-lg text-gray-300 max-w-4xl mx-auto leading-relaxed">{aboutData.about_text}</p>
+        </header>
+
+        <div className="grid md:grid-cols-2 gap-12 mb-12 items-start">
+          <section>
+            <div className="bg-secondary/20 p-8 rounded-lg shadow-lg h-full">
+              <h2 className="text-3xl font-semibold mb-4 text-center">{aboutData.team.title}</h2>
+              <p className="text-gray-300 leading-relaxed">{aboutData.team.text}</p>
+            </div>
+          </section>
+
+          <section>
+            <div className="bg-secondary/20 p-8 rounded-lg shadow-lg h-full">
+              <h2 className="text-3xl font-semibold mb-4 text-center">{aboutData.whyChooseUs.title}</h2>
+              <p className="text-gray-300 leading-relaxed">{aboutData.whyChooseUs.text}</p>
+            </div>
+          </section>
         </div>
 
-        {/* History Content */}
-        <div className="mb-16">
-          <div className="max-w-7xl mx-auto space-y-8">
-            {aboutData.history.map((paragraph, index) => (
-              <p key={index} className="text-md leading-relaxed text-foreground text-justify">
-                {paragraph}
-              </p>
+        <section className="mb-12">
+          <h2 className="text-3xl font-semibold mb-6 text-center">{aboutData.courses.title}</h2>
+          <p className="text-gray-400 text-center mb-8">{aboutData.courses.description}</p>
+          <div className="grid md:grid-cols-3 gap-8">
+            {aboutData.courses.levels.map((course) => (
+              <div key={course.name} className="bg-secondary/20 p-6 rounded-lg shadow-lg flex flex-col">
+                <h3 className="text-2xl font-bold mb-4">{course.name}</h3>
+                <ul className="space-y-3 flex-grow">
+                  {course.points.map((point) => (
+                    <li key={point} className="flex items-start">
+                      <CheckCircle className="h-5 w-5 mr-3 mt-1 text-primary flex-shrink-0" />
+                      <span className="text-gray-300">{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
           </div>
-        </div>
+        </section>
 
-        {/* Images Gallery */}
-        {filteredImages.length > 0 && (
-          <div className="mb-16">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-              {filteredImages.map((image, index) => (
-                <div
-                  key={index}
-                  className="group relative overflow-hidden rounded-2xl bg-card border border-border hover-glow transition-all duration-300 shadow-lg hover:shadow-2xl"
-                >
-                  <div className="aspect-[4/3] overflow-hidden">
-                    <img
-                      src={image.url}
-                      alt={image.caption}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <p className="text-card-foreground font-medium text-center text-lg">
-                      {image.caption}
-                    </p>
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        <footer className="text-center text-lg text-gray-400">
+          <p>{aboutData.conclusion}</p>
+        </footer>
       </div>
     </div>
   );
