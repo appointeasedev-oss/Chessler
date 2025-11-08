@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Chess, Move, Square } from 'chess.js';
 import { Chessboard } from 'react-chessboard';
 import StockfishWorker from 'stockfish.js/stockfish.js?worker';
-import { FaFlipboard, FaCog, FaBrain, FaChessPawn, FaCrown } from 'react-icons/fa';
+import { FaFlipboard, FaCog, FaBrain, FaChessPawn, FaCrown, FaStepBackward, FaStepForward, FaFastBackward, FaFastForward } from 'react-icons/fa';
 
 // A simple animation wrapper
 const AnimatedDiv: React.FC<{ children: React.ReactNode; className?: string; delay?: number }> = ({ children, className, delay }) => (
@@ -23,6 +23,37 @@ const Play: React.FC = () => {
   const [engineName, setEngineName] = useState<'stockfish' | 'lc0' | 'komodo' | 'Mali Brothers'>('stockfish');
   const [moveFrom, setMoveFrom] = useState('');
   const [optionSquares, setOptionSquares] = useState({});
+  const [moveHistory, setMoveHistory] = useState<string[]>([]);
+  const [viewingMove, setViewingMove] = useState<number | null>(null);
+
+  useEffect(() => {
+    const savedGame = localStorage.getItem('chessGameState');
+    if (savedGame) {
+      const { fen, orientation, difficulty: savedDifficulty, engine, history } = JSON.parse(savedGame);
+      const gameCopy = new Chess(fen);
+      setGame(gameCopy);
+      setBoardOrientation(orientation);
+      setDifficulty(savedDifficulty);
+      setEngineName(engine);
+      setMoveHistory(history);
+      setGameState('playing');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (gameState === 'playing') {
+      const chessGameState = {
+        fen: game.fen(),
+        orientation: boardOrientation,
+        difficulty: difficulty,
+        engine: engineName,
+        history: moveHistory,
+      };
+      localStorage.setItem('chessGameState', JSON.stringify(chessGameState));
+    } else {
+      localStorage.removeItem('chessGameState');
+    }
+  }, [game, boardOrientation, difficulty, engineName, gameState, moveHistory]);
 
   useEffect(() => {
     let worker: Worker;
@@ -42,6 +73,7 @@ const Play: React.FC = () => {
         setGame((g) => {
           const gameCopy = new Chess(g.fen());
           gameCopy.move(bestMove, { sloppy: true });
+          setMoveHistory(gameCopy.history());
           return gameCopy;
         });
         setThinking(false);
@@ -72,6 +104,8 @@ const Play: React.FC = () => {
     setGameState('playing');
     setMoveFrom('');
     setOptionSquares({});
+    setMoveHistory([]);
+    setViewingMove(null);
 
     if (boardOrientation === 'black') {
       setThinking(true);
@@ -81,7 +115,7 @@ const Play: React.FC = () => {
   };
 
   function onSquareClick(square: Square) {
-    if (thinking || gameState !== 'playing' || game.isGameOver() || game.turn() !== boardOrientation[0]) {
+    if (viewingMove !== null || thinking || gameState !== 'playing' || game.isGameOver() || game.turn() !== boardOrientation[0]) {
         return;
     }
 
@@ -131,6 +165,7 @@ const Play: React.FC = () => {
 
         if (move) {
             setGame(gameCopy);
+            setMoveHistory(gameCopy.history());
             if (!gameCopy.isGameOver()) {
                 setThinking(true);
                 engine?.postMessage(`position fen ${gameCopy.fen()}`);
@@ -145,13 +180,14 @@ const Play: React.FC = () => {
 
 
   const onDrop = (sourceSquare: Square, targetSquare: Square): boolean => {
-    if (thinking || gameState !== 'playing' || game.isGameOver()) return false;
+    if (viewingMove !== null || thinking || gameState !== 'playing' || game.isGameOver()) return false;
 
     const gameCopy = new Chess(game.fen());
     const move: Move | null = gameCopy.move({ from: sourceSquare, to: targetSquare, promotion: 'q' });
 
     if (move === null) return false;
     setGame(gameCopy);
+    setMoveHistory(gameCopy.history());
 
     setMoveFrom('');
     setOptionSquares({});
@@ -169,7 +205,28 @@ const Play: React.FC = () => {
     setGame(new Chess());
     setMoveFrom('');
     setOptionSquares({});
+    setMoveHistory([]);
+    setViewingMove(null);
   };
+  
+  const handleHistoryNavigation = (index: number) => {
+    if (index < 0 || index > moveHistory.length) return;
+  
+    const tempGame = new Chess();
+    for (let i = 0; i <= index; i++) {
+      tempGame.move(moveHistory[i]);
+    }
+    setViewingMove(index);
+    setGame(new Chess(tempGame.fen())); 
+  };
+  
+  const returnToGame = () => {
+    const tempGame = new Chess();
+    moveHistory.forEach(move => tempGame.move(move));
+    setGame(tempGame);
+    setViewingMove(null);
+  };
+
 
   if (gameState === 'setup') {
     return (
@@ -252,7 +309,7 @@ const Play: React.FC = () => {
               onSquareClick={onSquareClick}
               customSquareStyles={optionSquares}
               boardOrientation={boardOrientation}
-              arePiecesDraggable={!thinking && !game.isGameOver() && game.turn() === boardOrientation[0]}
+              arePiecesDraggable={viewingMove === null && !thinking && !game.isGameOver() && game.turn() === boardOrientation[0]}
               customDarkSquareStyle={{ backgroundColor: '#769656' }}
               customLightSquareStyle={{ backgroundColor: '#eeeed2' }}
               customDropSquareStyle={{ boxShadow: 'inset 0 0 1px 4px rgba(186,202,68,0.7)' }}
@@ -289,6 +346,29 @@ const Play: React.FC = () => {
                     <FaFlipboard />
                     <span>Flip Board</span>
                 </button>
+            </div>
+            <div className="mt-4">
+                <h3 className="text-xl font-bold text-center text-primary mb-2">Move History</h3>
+                <div className="bg-muted rounded-lg p-2 h-48 overflow-y-auto">
+                {moveHistory.map((move, index) => (
+                    <div
+                    key={index}
+                    onClick={() => handleHistoryNavigation(index)}
+                    className={`p-1 cursor-pointer rounded ${viewingMove === index ? 'bg-primary text-primary-foreground' : 'hover:bg-accent'}`}
+                    >
+                    {Math.floor(index / 2) + 1}. {move}
+                    </div>
+                ))}
+                </div>
+                <div className="flex justify-between mt-2">
+                    <button onClick={() => handleHistoryNavigation(0)} disabled={viewingMove === 0}><FaFastBackward/></button>
+                    <button onClick={() => handleHistoryNavigation(viewingMove !== null ? viewingMove -1 : moveHistory.length - 1)} disabled={viewingMove === 0}><FaStepBackward/></button>
+                    <button onClick={() => handleHistoryNavigation(viewingMove !== null ? viewingMove + 1: moveHistory.length-1)} disabled={viewingMove === moveHistory.length-1}><FaStepForward/></button>
+                    <button onClick={() => handleHistoryNavigation(moveHistory.length - 1)} disabled={viewingMove === moveHistory.length -1}><FaFastForward/></button>
+                </div>
+                {viewingMove !== null && (
+                    <button onClick={returnToGame} className="w-full mt-2 p-2 rounded-lg bg-primary text-primary-foreground">Return to Game</button>
+                )}
             </div>
         </div>
       </div>
