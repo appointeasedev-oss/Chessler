@@ -18,7 +18,8 @@
     { "name": "Tutorials", "path": "/tutorials" },
     { "name": "Star Players", "path": "/star-players" },
     { "name": "Play Vs Computer", "path": "/play" },
-    { "name": "Academy", "path": "/academy" }
+    { "name": "Alumni", "path": "/alumni" }
+    
   ],
   "socialLinks": [
     { "name": "Facebook", "url": "https://www.facebook.com/ChesslerClub/", "icon": "facebook" },

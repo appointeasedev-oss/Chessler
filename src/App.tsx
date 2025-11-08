@@ -18,6 +18,7 @@ import { useLenis } from "./hooks/useLenis";
 import { useEffect, useState } from "react";
 import Loader from "./components/ui/Loader";
 import Play from "./pages/Play";
+import AlumniPage from "./pages/AlumniPage";
 
 const queryClient = new QueryClient();
 
@@ -92,6 +93,7 @@ const App = () => {
                 <Route path="/gallery" element={<GalleryPage />} />
                 <Route path="/tutorials" element={<TutorialsPage />} />
                 <Route path="/about" element={<AboutPage />} />
+                <Route path="/alumni" element={<AlumniPage />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

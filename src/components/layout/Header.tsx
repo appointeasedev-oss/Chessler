@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
@@ -64,6 +65,7 @@ const Header = () => {
     { name: "Gallery", path: "/gallery" },
     { name: "Tutorials", path: "/tutorials" },
     { name: "About", path: "/about" },
+    { name: "Alumni", path: "/alumni" },
   ];
 
   const isActive = (path: string) => location.pathname === path;
