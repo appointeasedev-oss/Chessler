@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react";
 import MemorialCard from "@/components/cards/MemorialCard";
+import alumniData from "@/data/alumni.json";
 
 interface Alumni {
   name: string;
@@ -14,9 +15,7 @@ const AlumniPage = () => {
   const [alumni, setAlumni] = useState<Alumni[]>([]);
 
   useEffect(() => {
-    fetch("src/data/alumni.json")
-      .then((response) => response.json())
-      .then((data) => setAlumni(data));
+    setAlumni(alumniData);
   }, []);
 
   return (
