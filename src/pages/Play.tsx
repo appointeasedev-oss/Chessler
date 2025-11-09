@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
-import { Chess, Move, Square } from 'chess.js';
+import { Chess } from 'chess.js';
+import type { Square } from 'chess.js';
 import { Chessboard } from 'react-chessboard';
 import StockfishWorker from 'stockfish.js/stockfish.js?worker';
 import { FaFlipboard, FaCog, FaBrain, FaChessPawn, FaCrown, FaStepBackward, FaStepForward } from 'react-icons/fa';
@@ -20,7 +21,7 @@ const Play: React.FC = () => {
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
   const [thinking, setThinking] = useState(false);
   const [engineReady, setEngineReady] = useState(false);
-  const [engineName, setEngineName] = useState<'stockfish' | 'lc0' | 'komodo' | 'Mali Brothers'>('stockfish');
+  const [engineName, setEngineName] = useState<'stockfish' | 'lc0' | 'ShashChess' | 'Mali Brothers'>('stockfish');
   const [moveFrom, setMoveFrom] = useState('');
   const [optionSquares, setOptionSquares] = useState({});
   const [moveHistory, setMoveHistory] = useState<string[]>([]);
@@ -60,12 +61,7 @@ const Play: React.FC = () => {
 
   // Initialize engine
   useEffect(() => {
-    let worker: Worker;
-    if (engineName === 'stockfish') {
-      worker = new StockfishWorker();
-    } else {
-      worker = new StockfishWorker(); // Placeholder for other engines
-    }
+    const worker = new StockfishWorker();
     setEngine(worker);
 
     worker.onmessage = (event: MessageEvent<string>) => {
@@ -94,6 +90,25 @@ const Play: React.FC = () => {
       worker.terminate();
     };
   }, [engineName]);
+
+  // Effect to update review board
+  useEffect(() => {
+    if (viewingMove === null || moveHistory.length === 0) {
+        setReviewFen('');
+        return;
+    }
+    const tempGame = new Chess();
+    try {
+        for (let i = 0; i <= viewingMove; i++) {
+            tempGame.move(moveHistory[i]);
+        }
+        setReviewFen(tempGame.fen());
+    } catch (e) {
+        console.error("Error replaying history:", e);
+        setViewingMove(null); // Exit review mode if history is broken
+    }
+  }, [viewingMove, moveHistory]);
+
 
   const handleStartGame = () => {
     if (!engineReady) return;
@@ -204,35 +219,24 @@ const Play: React.FC = () => {
   };
   
   const handleHistoryNavigation = (direction: 'prev' | 'next' | 'start') => {
-    let newMoveIndex: number;
-
     if (direction === 'start') {
-        if (moveHistory.length === 0) return;
-        newMoveIndex = moveHistory.length - 1;
-    } else {
-        if (viewingMove === null) return;
-        newMoveIndex = direction === 'prev' ? viewingMove - 1 : viewingMove + 1;
-    }
-  
-    if (newMoveIndex < 0 || newMoveIndex >= moveHistory.length) return;
-  
-    const tempGame = new Chess();
-    try {
-        for (let i = 0; i <= newMoveIndex; i++) {
-            tempGame.move(moveHistory[i]);
+        if (moveHistory.length > 0) {
+            setViewingMove(moveHistory.length - 1);
         }
-    } catch(e) {
-        console.error("Error replaying history:", e);
-        return; // Abort if history is corrupted
+    } else {
+        setViewingMove(current => {
+            if (current === null) return null;
+            const newValue = direction === 'prev' ? current - 1 : current + 1;
+            if (newValue >= 0 && newValue < moveHistory.length) {
+                return newValue;
+            }
+            return current;
+        });
     }
-    
-    setReviewFen(tempGame.fen());
-    setViewingMove(newMoveIndex);
   };
   
   const returnToGame = () => {
     setViewingMove(null);
-    setReviewFen('');
   };
 
   if (gameState === 'setup') {
@@ -321,20 +325,13 @@ const Play: React.FC = () => {
               customLightSquareStyle={{ backgroundColor: '#eeeed2' }}
               customDropSquareStyle={{ boxShadow: 'inset 0 0 1px 4px rgba(186,202,68,0.7)' }}
             />
-            {thinking && (
+            {(thinking || (viewingMove !== null)) && (
               <div className="absolute inset-0 bg-background/80 flex justify-center items-center">
-                <div className="text-xl font-semibold flex items-center gap-2 text-primary">
-                  <FaBrain className="animate-pulse" />
-                  <span>Computer is thinking...</span>
-                </div>
+                  <div className="text-xl font-semibold flex items-center gap-2 text-primary">
+                  {thinking && <><FaBrain className="animate-pulse" /><span>Computer is thinking...</span></>}
+                  {viewingMove !== null && <span>Reviewing Move</span>}
+                  </div>
               </div>
-            )}
-            {viewingMove !== null && (
-                <div className="absolute inset-0 bg-background/80 flex justify-center items-center">
-                    <div className="text-xl font-semibold flex items-center gap-2 text-primary">
-                    <span>Reviewing Move</span>
-                    </div>
-                </div>
             )}
           </div>
         </div>
@@ -355,7 +352,7 @@ const Play: React.FC = () => {
                 <button
                     onClick={() => setBoardOrientation(boardOrientation === 'white' ? 'black' : 'white')}
                     className="flex items-center justify-center gap-2 p-3 rounded-lg bg-secondary hover:bg-accent transition-colors"
-                    disabled={thinking}
+                    disabled={thinking || viewingMove !== null}
                 >
                     <FaFlipboard />
                     <span>Flip Board</span>
