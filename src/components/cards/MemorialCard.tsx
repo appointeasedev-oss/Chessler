@@ -16,7 +16,7 @@ const MemorialCard = ({ name, role, bio, photo, memoriam }: MemorialCardProps) =
           <img
             src={photo}
             alt={name}
-            className="w-32 h-32 rounded-full object-cover"
+            className="w-32 h-32 rounded-full object-cover object-top"
           />
         </div>
         <CardTitle className="mt-4">{name}</CardTitle>
