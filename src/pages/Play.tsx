@@ -226,6 +226,17 @@ const Play: React.FC = () => {
     setViewingMove(null);
   };
 
+  const movesForDisplay = [];
+  for (let i = 0; i < moveHistory.length; i += 2) {
+    movesForDisplay.push({
+      move: i / 2 + 1,
+      white: moveHistory[i],
+      black: moveHistory[i + 1],
+      whiteIndex: i,
+      blackIndex: i + 1,
+    });
+  }
+
   if (gameState === 'setup') {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 pt-32 md:pt-36">
@@ -346,19 +357,29 @@ const Play: React.FC = () => {
             </div>
             <div className="mt-4">
                 <h3 className="text-xl font-bold text-center text-primary mb-2">Move History</h3>
-                <div className="flex flex-wrap gap-2 text-center items-center justify-center h-48 overflow-y-auto bg-secondary p-2 rounded-lg">
-                    {moveHistory.map((move, index) => (
-                        <button 
-                            key={index} 
-                            onClick={() => handleMoveClick(index)}
-                            className={`p-2 rounded-lg ${viewingMove === index ? 'bg-primary text-primary-foreground' : 'bg-background'}`}
-                        >
-                            {move}
-                        </button>
+                <div className="flex flex-col gap-2 h-48 overflow-y-auto bg-secondary p-2 rounded-lg">
+                    {movesForDisplay.map(({ move, white, black, whiteIndex, blackIndex }) => (
+                        <div key={move} className="grid grid-cols-[auto_1fr_1fr] items-center gap-2 text-sm">
+                            <span className="font-bold text-muted-foreground">{move}.</span>
+                            <button
+                                onClick={() => handleMoveClick(whiteIndex)}
+                                className={`p-2 rounded-lg font-semibold ${viewingMove === whiteIndex ? 'bg-primary text-primary-foreground' : 'bg-white text-black'}`}
+                            >
+                                {white}
+                            </button>
+                            {black && (
+                                <button
+                                    onClick={() => handleMoveClick(blackIndex)}
+                                    className={`p-2 rounded-lg font-semibold ${viewingMove === blackIndex ? 'bg-primary text-primary-foreground' : 'bg-black text-white'}`}
+                                >
+                                    {black}
+                                </button>
+                            )}
+                        </div>
                     ))}
                 </div>
                 {viewingMove !== null && (
-                    <button onClick={returnToGame} className="w-full mt-2 p-2 rounded-lg bg-primary text-primary-foreground">Back to Game</button>
+                    <button onClick={returnToGame} className="w-full mt-4 p-2 rounded-lg bg-primary text-primary-foreground">Back to Game</button>
                 )}
             </div>
         </div>
