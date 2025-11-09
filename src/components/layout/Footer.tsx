@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin, Globe } from 'lucide-react';
 import footerData from '../../data/footer.json';
 
 const Footer = () => {
@@ -8,6 +8,7 @@ const Footer = () => {
     instagram: Instagram,
     linkedin: Linkedin,
     email: Mail,
+    google: Globe,
   };
 
   return (

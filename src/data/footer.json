@@ -4,11 +4,11 @@
     "alt": "Chessler Chess Club Logo",
     "title": "Chessler Chess Club | Academy"
   },
-  "description": "The way of learning.....",
+  "description": "The way of learning...",
   "contact": {
     "address": "A30b Jaanki Vihar, Dhawas Road, Heerapura Jaipur",
     "email": "chesslerclub@gmail.com",
-    "phone": "+91-8133970362"
+    "phone": "+91-931406264"
   },
   "navigation": [
     { "name": "About", "path": "/about" },
@@ -25,7 +25,8 @@
     { "name": "Facebook", "url": "https://www.facebook.com/ChesslerClub/", "icon": "facebook" },
     { "name": "Instagram", "url": "https://www.instagram.com/chessler_chess_club/", "icon": "instagram" },
     { "name": "LinkedIn", "url": "https://in.linkedin.com/in/shubham-saini-070682118", "icon": "linkedin" },
-    { "name": "Email", "url": "mailto:chesslerclub@gmail.com", "icon": "email" }
+    { "name": "Email", "url": "mailto:chesslerclub@gmail.com", "icon": "email" },
+    { "name": "Google", "url": "https://www.google.com", "icon": "google" }
   ],
   "copyright": {
     "text": "Chessler Chess Club | Academy. All rights reserved.",

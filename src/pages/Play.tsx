@@ -234,12 +234,13 @@ const Play: React.FC = () => {
         <AnimatedDiv className="text-center mb-12">
           <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-4">Play vs Computer</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Choose your settings and challenge our advanced chess engine.
+            Choose your settings and challenge our advanced chess/bots.
+          
           </p>
         </AnimatedDiv>
         <AnimatedDiv className="bg-card p-8 rounded-lg shadow-lg w-full max-w-md" delay={200}>
           <div className="mb-6">
-            <label className="block text-lg font-medium text-muted-foreground mb-3">Chess Engine</label>
+            <label className="block text-lg font-medium text-muted-foreground mb-3">Chess Engine & Bots</label>
             <div className="grid grid-cols-2 gap-3">
               {['stockfish', 'lc0', 'komodo', 'Mali Brothers'].map((eng) => (
                 <button
