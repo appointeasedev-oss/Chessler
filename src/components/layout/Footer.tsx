@@ -64,7 +64,7 @@ const Footer = () => {
           </div>
 
           {/* Quick Links */}
-          <div className="col-span-1 md:col-span-3 md:ml-80">
+          <div className="col-span-1 md:col-span-3">
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               {footerData.navigation.slice(0, 4).map((item) => (
@@ -81,7 +81,7 @@ const Footer = () => {
           </div>
 
           {/* More Links */}
-          <div className="col-span-1 md:col-span-3 md:ml-80">
+          <div className="col-span-1 md:col-span-3">
             <h3 className="text-lg font-semibold mb-4">More</h3>
             <ul className="space-y-2">
               {footerData.navigation.slice(4).map((item) => (
