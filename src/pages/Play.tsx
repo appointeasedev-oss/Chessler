@@ -4,7 +4,7 @@ import { Chess } from 'chess.js';
 import type { Square } from 'chess.js';
 import { Chessboard } from 'react-chessboard';
 import StockfishWorker from 'stockfish.js/stockfish.js?worker';
-import { FaFlipboard, FaCog, FaBrain, FaChessPawn, FaCrown, FaStepBackward, FaStepForward } from 'react-icons/fa';
+import { FaFlipboard, FaCog, FaBrain, FaChessPawn, FaCrown } from 'react-icons/fa';
 
 // A simple animation wrapper
 const AnimatedDiv: React.FC<{ children: React.ReactNode; className?: string; delay?: number }> = ({ children, className, delay }) => (
@@ -218,21 +218,8 @@ const Play: React.FC = () => {
     setViewingMove(null);
   };
   
-  const handleHistoryNavigation = (direction: 'prev' | 'next' | 'start') => {
-    if (direction === 'start') {
-        if (moveHistory.length > 0) {
-            setViewingMove(moveHistory.length - 1);
-        }
-    } else {
-        setViewingMove(current => {
-            if (current === null) return null;
-            const newValue = direction === 'prev' ? current - 1 : current + 1;
-            if (newValue >= 0 && newValue < moveHistory.length) {
-                return newValue;
-            }
-            return current;
-        });
-    }
+  const handleMoveClick = (moveIndex: number) => {
+    setViewingMove(moveIndex);
   };
   
   const returnToGame = () => {
@@ -325,11 +312,10 @@ const Play: React.FC = () => {
               customLightSquareStyle={{ backgroundColor: '#eeeed2' }}
               customDropSquareStyle={{ boxShadow: 'inset 0 0 1px 4px rgba(186,202,68,0.7)' }}
             />
-            {(thinking || (viewingMove !== null)) && (
+            {thinking && (
               <div className="absolute inset-0 bg-background/80 flex justify-center items-center">
                   <div className="text-xl font-semibold flex items-center gap-2 text-primary">
-                  {thinking && <><FaBrain className="animate-pulse" /><span>Computer is thinking...</span></>}
-                  {viewingMove !== null && <span>Reviewing Move</span>}
+                  <FaBrain className="animate-pulse" /><span>Computer is thinking...</span>
                   </div>
               </div>
             )}
@@ -359,23 +345,21 @@ const Play: React.FC = () => {
                 </button>
             </div>
             <div className="mt-4">
-            <h3 className="text-xl font-bold text-center text-primary mb-2">Review Game</h3>
-            {viewingMove !== null ? (
-                <div>
-                    <div className="flex items-center justify-between">
-                        <button onClick={() => handleHistoryNavigation('prev')} disabled={viewingMove === 0}>
-                            <FaStepBackward />
+                <h3 className="text-xl font-bold text-center text-primary mb-2">Move History</h3>
+                <div className="flex flex-wrap gap-2 text-center items-center justify-center h-48 overflow-y-auto bg-secondary p-2 rounded-lg">
+                    {moveHistory.map((move, index) => (
+                        <button 
+                            key={index} 
+                            onClick={() => handleMoveClick(index)}
+                            className={`p-2 rounded-lg ${viewingMove === index ? 'bg-primary text-primary-foreground' : 'bg-background'}`}
+                        >
+                            {move}
                         </button>
-                        <span className='text-sm text-muted-foreground'>Move {viewingMove + 1} of {moveHistory.length}</span>
-                        <button onClick={() => handleHistoryNavigation('next')} disabled={viewingMove >= moveHistory.length - 1}>
-                            <FaStepForward />
-                        </button>
-                    </div>
-                    <button onClick={returnToGame} className="w-full mt-2 p-2 rounded-lg bg-primary text-primary-foreground">Back to Game</button>
+                    ))}
                 </div>
-            ) : (
-                <button onClick={() => handleHistoryNavigation('start')} className="w-full p-2 rounded-lg bg-secondary" disabled={moveHistory.length === 0 || thinking}>Review Game</button>
-            )}
+                {viewingMove !== null && (
+                    <button onClick={returnToGame} className="w-full mt-2 p-2 rounded-lg bg-primary text-primary-foreground">Back to Game</button>
+                )}
             </div>
         </div>
       </div>
