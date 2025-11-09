@@ -252,7 +252,7 @@ const Play: React.FC = () => {
           <div className="mb-6">
             <label className="block text-lg font-medium text-muted-foreground mb-3">Chess Engine</label>
             <div className="grid grid-cols-2 gap-3">
-              {['stockfish', 'lc0', 'komodo', 'Mali Brothers'].map((eng) => (
+              {['stockfish', 'lc0', 'ShashChess', 'Mali Brothers'].map((eng) => (
                 <button
                   key={eng}
                   onClick={() => setEngineName(eng as any)}
