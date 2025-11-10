@@ -18,7 +18,7 @@ const Play: React.FC = () => {
   const [game, setGame] = useState(new Chess());
   const [engine, setEngine] = useState<Worker | null>(null);
   const [boardOrientation, setBoardOrientation] = useState<'white' | 'black'>('white');
-  const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
+  const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy');
   const [thinking, setThinking] = useState(false);
   const [engineReady, setEngineReady] = useState(false);
   const [engineName, setEngineName] = useState<'stockfish' | 'lc0' | 'ShashChess' | 'Mali Brothers'>('stockfish');
