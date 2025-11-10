@@ -14,7 +14,7 @@ const AnimatedDiv: React.FC<{ children: React.ReactNode; className?: string; del
 );
 
 const Play: React.FC = () => {
-  const [gameState, setGameState] = useState('setup'); // 'setup', 'playing'
+  const [gameState, setGameState] = useState('loading'); // 'loading', 'setup', 'playing', 'prompt'
   const [game, setGame] = useState(new Chess());
   const [engine, setEngine] = useState<Worker | null>(null);
   const [boardOrientation, setBoardOrientation] = useState<'white' | 'black'>('white');
@@ -32,6 +32,15 @@ const Play: React.FC = () => {
   useEffect(() => {
     const savedGame = localStorage.getItem('chessGameState');
     if (savedGame) {
+      setGameState('prompt');
+    } else {
+      setGameState('setup');
+    }
+  }, []);
+
+  const loadSavedGame = () => {
+    const savedGame = localStorage.getItem('chessGameState');
+    if (savedGame) {
       const { fen, orientation, difficulty: savedDifficulty, engine, history } = JSON.parse(savedGame);
       const gameCopy = new Chess(fen);
       setGame(gameCopy);
@@ -41,7 +50,7 @@ const Play: React.FC = () => {
       setMoveHistory(history || []);
       setGameState('playing');
     }
-  }, []);
+  };
 
   // Save game to local storage
   useEffect(() => {
@@ -54,7 +63,7 @@ const Play: React.FC = () => {
         history: moveHistory,
       };
       localStorage.setItem('chessGameState', JSON.stringify(chessGameState));
-    } else {
+    } else if (gameState === 'setup') {
       localStorage.removeItem('chessGameState');
     }
   }, [game, boardOrientation, difficulty, engineName, gameState, moveHistory]);
@@ -235,6 +244,41 @@ const Play: React.FC = () => {
       whiteIndex: i,
       blackIndex: i + 1,
     });
+  }
+
+  if (gameState === 'loading') {
+    return (
+        <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 pt-32 md:pt-36">
+            <FaCog className="animate-spin text-6xl text-primary"/>
+        </div>
+    )
+  }
+
+  if (gameState === 'prompt') {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 pt-32 md:pt-36">
+        <AnimatedDiv className="text-center mb-12">
+          <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-4">Continue Game?</h1>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            We found a saved game. Would you like to continue or start a new game?
+          </p>
+        </AnimatedDiv>
+        <AnimatedDiv className="bg-card p-8 rounded-lg shadow-lg w-full max-w-md flex gap-4" delay={200}>
+          <button
+            onClick={loadSavedGame}
+            className="w-full p-4 text-xl font-bold rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground transition-colors"
+          >
+            Continue Game
+          </button>
+          <button
+            onClick={() => setGameState('setup')}
+            className="w-full p-4 text-xl font-bold rounded-lg bg-secondary hover:bg-accent transition-colors"
+          >
+            New Game
+          </button>
+        </AnimatedDiv>
+      </div>
+    );
   }
 
   if (gameState === 'setup') {
