@@ -16,17 +16,10 @@
     { "name": "Achievements", "path": "/achievements" },
     { "name": "Gallery", "path": "/gallery" },
     { "name": "Tutorials", "path": "/tutorials" },
-    { "name": "Star Players", "path": "/star-players" },
     { "name": "Play Vs Computer", "path": "/play" },
-    { "name": "Alumni", "path": "/alumni" }
+    { "name": "Alumni", "path": "/alumni" },
+    { "name": "Contact", "path": "/contact" }
     
-  ],
-  "socialLinks": [
-    { "name": "Facebook", "url": "https://www.facebook.com/ChesslerClub/", "icon": "facebook" },
-    { "name": "Instagram", "url": "https://www.instagram.com/chessler_chess_club/", "icon": "instagram" },
-    { "name": "LinkedIn", "url": "https://in.linkedin.com/in/shubham-saini-070682118", "icon": "linkedin" },
-    { "name": "Email", "url": "mailto:chesslerclub@gmail.com", "icon": "email" },
-    { "name": "Google", "url": "https://maps.app.goo.gl/KGZZMZx5YukwyzBT6?g_st=ipc", "icon": "google" }
   ],
   "copyright": {
     "text": "Chessler Chess Club | Academy. All rights reserved.",

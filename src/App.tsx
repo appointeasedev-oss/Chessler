@@ -8,7 +8,6 @@ import Footer from "./components/layout/Footer";
 import HomePage from "./pages/HomePage";
 import EventsPage from "./pages/EventsPage";
 import AchievementsPage from "./pages/AchievementsPage";
-import StarPlayersPage from "./pages/StarPlayersPage";
 import GalleryPage from "./pages/GalleryPage";
 import TutorialsPage from "./pages/TutorialsPage";
 import AboutPage from "./pages/AboutPage";
@@ -19,6 +18,7 @@ import { useEffect, useState } from "react";
 import Loader from "./components/ui/Loader";
 import Play from "./pages/Play";
 import AlumniPage from "./pages/AlumniPage";
+import ContactPage from "./pages/ContactPage";
 
 const queryClient = new QueryClient();
 
@@ -89,11 +89,11 @@ const App = () => {
                 <Route path="/events" element={<EventsPage />} />
                 <Route path="/play" element={<Play />} />
                 <Route path="/achievements" element={<AchievementsPage />} />
-                <Route path="/star-players" element={<StarPlayersPage />} />
                 <Route path="/gallery" element={<GalleryPage />} />
                 <Route path="/tutorials" element={<TutorialsPage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/alumni" element={<AlumniPage />} />
+                <Route path="/contact" element={<ContactPage />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin, Globe } from 'lucide-react';
 import footerData from '../../data/footer.json';
+import contactData from '../../data/contact.json';
 
 const Footer = () => {
   const iconMap = {
@@ -47,14 +48,14 @@ const Footer = () => {
 
             {/* Social Links */}
             <div className="flex space-x-4 mt-6">
-              {footerData.socialLinks.map((social) => {
-                const IconComponent = iconMap[social.icon as keyof typeof iconMap];
+              {Object.entries(contactData.socialLinks).map(([platform, url]) => {
+                const IconComponent = iconMap[platform as keyof typeof iconMap];
                 return (
                   <a
-                    key={social.name}
-                    href={social.url}
+                    key={platform}
+                    href={url}
                     className=" hover:text-primary transition-colors"
-                    aria-label={social.name}
+                    aria-label={platform}
                   >
                     <IconComponent className="h-5 w-5" />
                   </a>

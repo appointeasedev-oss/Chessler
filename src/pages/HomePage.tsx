@@ -1,7 +1,7 @@
 import Hero from "@/components/sections/Hero";
 import EventsPreview from "@/components/sections/EventsPreview";
-import OurStarPlayers from "@/components/sections/OurStarPlayers";
 import SponsorsSection from "@/components/sections/SponsorsSection";
+import ContactSection from "@/components/sections/ContactSection";
 
 const FounderSection = () => {
   return (
@@ -37,7 +37,7 @@ const HomePage = () => {
       <Hero />
       <FounderSection />
       <EventsPreview />
-      <OurStarPlayers maxEvents={3} />
+      <ContactSection />
       <SponsorsSection />
     </div>
   );

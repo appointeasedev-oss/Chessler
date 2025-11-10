@@ -61,11 +61,11 @@ const Header = () => {
     { name: "Events", path: "/events" },
     { name: "Play Vs Computer", path: "/play" },
     { name: "Achievements", path: "/achievements" },
-    { name: "Our Star Players", path: "/star-players" },
     { name: "Gallery", path: "/gallery" },
     { name: "Tutorials", path: "/tutorials" },
     { name: "Alumni", path: "/alumni" },
     { name: "About", path: "/about" },
+    { name: "Contact", path: "/contact" },
   ];
 
   const isActive = (path: string) => location.pathname === path;
