@@ -19,6 +19,7 @@ import Loader from "./components/ui/Loader";
 import Play from "./pages/Play";
 import AlumniPage from "./pages/AlumniPage";
 import ContactPage from "./pages/ContactPage";
+import Watermark from "./components/Watermark";
 
 const queryClient = new QueryClient();
 
@@ -81,10 +82,11 @@ const App = () => {
         <BrowserRouter>
           <ScrollToTop />
           <div className="min-h-screen bg-background flex flex-col">
+            <Watermark />
             {loaderMounted && <Loader visible={loaderVisible} />}
             <Header />
             <main className="flex-1">
-              <Routes>
+              <Routes future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/events" element={<EventsPage />} />
                 <Route path="/play" element={<Play />} />

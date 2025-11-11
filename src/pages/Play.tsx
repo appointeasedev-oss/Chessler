@@ -108,7 +108,7 @@ const Play: React.FC = () => {
       worker.postMessage('quit');
       worker.terminate();
     };
-  }, [game, engineName]);
+  }, []);
 
   // Effect to update review board
   useEffect(() => {

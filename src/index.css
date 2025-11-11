@@ -460,3 +460,15 @@
   pointer-events: none;
   }
 }
+
+.watermark-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" transform="rotate(-45, 200, 200)" style="font-size: 30px; fill: rgba(255, 255, 255, 0.1); font-weight: bold;">Sparrow AI Solutions</text></svg>');
+  background-repeat: repeat;
+}
