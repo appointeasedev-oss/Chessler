@@ -36,7 +36,7 @@ const ContactSection = () => {
             Get In Touch
           </h2>
           <p className="text-xl text-secondary-foreground/80 max-w-2xl mx-auto">
-            Connect with us and join the robotics revolution
+            Connect with us and join Chessler Chess Club
           </p>
         </div>
 
