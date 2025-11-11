@@ -27,6 +27,8 @@ const Play: React.FC = () => {
   const [moveHistory, setMoveHistory] = useState<string[]>([]);
   const [viewingMove, setViewingMove] = useState<number | null>(null);
   const [reviewFen, setReviewFen] = useState('');
+  const [showCheckPopup, setShowCheckPopup] = useState(false);
+  const [showCheckmatePopup, setShowCheckmatePopup] = useState(false);
 
   // Load game from local storage
   useEffect(() => {
@@ -68,8 +70,16 @@ const Play: React.FC = () => {
     }
   }, [game, boardOrientation, difficulty, engineName, gameState, moveHistory]);
 
-  // Initialize engine
+  // Initialize engine and check for check/checkmate
   useEffect(() => {
+    if (game.inCheck()) {
+      setShowCheckPopup(true);
+      setTimeout(() => setShowCheckPopup(false), 2000);
+    }
+    if (game.isCheckmate()) {
+      setShowCheckmatePopup(true);
+    }
+
     const worker = new StockfishWorker();
     setEngine(worker);
 
@@ -98,7 +108,7 @@ const Play: React.FC = () => {
       worker.postMessage('quit');
       worker.terminate();
     };
-  }, [engineName]);
+  }, [game, engineName]);
 
   // Effect to update review board
   useEffect(() => {
@@ -134,6 +144,7 @@ const Play: React.FC = () => {
     setOptionSquares({});
     setMoveHistory([]);
     setViewingMove(null);
+    setShowCheckmatePopup(false);
 
     if (boardOrientation === 'black') {
       setThinking(true);
@@ -225,6 +236,7 @@ const Play: React.FC = () => {
     setOptionSquares({});
     setMoveHistory([]);
     setViewingMove(null);
+    setShowCheckmatePopup(false);
   };
   
   const handleMoveClick = (moveIndex: number) => {
@@ -371,6 +383,19 @@ const Play: React.FC = () => {
               <div className="absolute inset-0 bg-background/80 flex justify-center items-center">
                   <div className="text-xl font-semibold flex items-center gap-2 text-primary">
                   <FaBrain className="animate-pulse" /><span>Computer is thinking...</span>
+                  </div>
+              </div>
+            )}
+            {showCheckPopup && (
+              <div className="absolute inset-0 bg-background/80 flex justify-center items-center">
+                  <div className="text-4xl font-bold text-red-500 animate-ping">Check!</div>
+              </div>
+            )}
+            {showCheckmatePopup && (
+              <div className="absolute inset-0 bg-background/80 flex justify-center items-center">
+                  <div className="text-center">
+                      <div className="text-6xl font-bold text-red-600">Checkmate!</div>
+                      <button onClick={resetGame} className="mt-4 p-2 rounded-lg bg-primary text-primary-foreground">Play Again</button>
                   </div>
               </div>
             )}

@@ -30,7 +30,9 @@ const Footer = () => {
             <div className="space-y-2 text-sm">
               <div className="flex items-center">
                 <MapPin className="h-4 w-4 mr-2" />
-                <span>{footerData.contact.address}</span>
+                <a href="https://maps.app.goo.gl/yX8Zq3boGBC6tFyd7?g_st=iw" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                  <span>{footerData.contact.address}</span>
+                </a>
               </div>
               <div className="flex items-center">
                 <Mail className="h-4 w-4 mr-2" />
@@ -61,6 +63,15 @@ const Footer = () => {
                   </a>
                 );
               })}
+              <a
+                href="https://maps.app.goo.gl/yX8Zq3boGBC6tFyd7?g_st=iw"
+                target="_blank"
+                rel="noopener noreferrer"
+                className=" hover:text-primary transition-colors"
+                aria-label="google maps"
+              >
+                <Globe className="h-5 w-5" />
+              </a>
             </div>
           </div>
 
@@ -106,7 +117,7 @@ const Footer = () => {
             </span>
             <span>
               <a
-                href=""
+                href="https://www.instagram.com/idk_satvik.s/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm hover:text-[#FFA500] transition-colors no-underline"
