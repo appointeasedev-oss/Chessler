@@ -70,16 +70,8 @@ const Play: React.FC = () => {
     }
   }, [game, boardOrientation, difficulty, engineName, gameState, moveHistory]);
 
-  // Initialize engine and check for check/checkmate
+  // Initialize engine
   useEffect(() => {
-    if (game.inCheck()) {
-      setShowCheckPopup(true);
-      setTimeout(() => setShowCheckPopup(false), 2000);
-    }
-    if (game.isCheckmate()) {
-      setShowCheckmatePopup(true);
-    }
-
     const worker = new StockfishWorker();
     setEngine(worker);
 
@@ -109,6 +101,30 @@ const Play: React.FC = () => {
       worker.terminate();
     };
   }, []);
+
+  // Check for check/checkmate
+  useEffect(() => {
+    if (game.inCheck()) {
+      setShowCheckPopup(true);
+      setTimeout(() => setShowCheckPopup(false), 2000);
+    }
+    if (game.isCheckmate()) {
+      setShowCheckmatePopup(true);
+    }
+  }, [game]);
+
+  // Sound effects for check and checkmate
+  useEffect(() => {
+    if (showCheckPopup) {
+      new Audio('/sounds/check.mp3').play();
+    }
+  }, [showCheckPopup]);
+
+  useEffect(() => {
+    if (showCheckmatePopup) {
+      new Audio('/sounds/checkmate.mp3').play();
+    }
+  }, [showCheckmatePopup]);
 
   // Effect to update review board
   useEffect(() => {
@@ -406,6 +422,9 @@ const Play: React.FC = () => {
             <h2 className="text-2xl font-bold text-center text-primary">Game Info</h2>
             <div className="text-center text-xl font-medium text-muted-foreground">
                 {game.isGameOver() ? `Game Over - ${game.isCheckmate() ? 'Checkmate!' : 'Draw'}` : `It's ${game.turn() === 'w' ? 'White' : 'Black'}'s turn`}
+            </div>
+            <div className="text-center text-xl font-bold text-red-500">
+                {game.isCheckmate() ? 'Checkmate!' : game.inCheck() ? 'Check!' : ''}
             </div>
             <div className="flex flex-col gap-4 mt-4">
                 <button
