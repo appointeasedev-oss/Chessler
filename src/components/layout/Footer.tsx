@@ -1,17 +1,8 @@
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin, Globe } from 'lucide-react';
+import { Mail, Phone, MapPin, Globe } from 'lucide-react';
 import footerData from '../../data/footer.json';
-import contactData from '../../data/contact.json';
 
 const Footer = () => {
-  const iconMap = {
-    facebook: Facebook,
-    instagram: Instagram,
-    linkedin: Linkedin,
-    email: Mail,
-    google: Globe,
-  };
-
   return (
     <footer className=" text-white bg-black">
       <div className="container mx-auto px-4 py-12">
@@ -50,19 +41,6 @@ const Footer = () => {
 
             {/* Social Links */}
             <div className="flex space-x-4 mt-6">
-              {Object.entries(contactData.socialLinks).map(([platform, url]) => {
-                const IconComponent = iconMap[platform as keyof typeof iconMap];
-                return (
-                  <a
-                    key={platform}
-                    href={url}
-                    className=" hover:text-primary transition-colors"
-                    aria-label={platform}
-                  >
-                    <IconComponent className="h-5 w-5" />
-                  </a>
-                );
-              })}
               <a
                 href="https://maps.app.goo.gl/yX8Zq3boGBC6tFyd7?g_st=iw"
                 target="_blank"

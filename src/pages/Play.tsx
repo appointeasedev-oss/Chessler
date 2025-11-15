@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Chess } from 'chess.js';
-import type { Square } from 'chess.js';
+import type { Square, PieceSymbol } from 'chess.js';
 import { Chessboard } from 'react-chessboard';
 import StockfishWorker from 'stockfish.js/stockfish.js?worker';
 import { FaFlipboard, FaCog, FaBrain, FaChessPawn, FaCrown } from 'react-icons/fa';
@@ -13,8 +13,15 @@ const AnimatedDiv: React.FC<{ children: React.ReactNode; className?: string; del
   </div>
 );
 
+const themes = {
+  classic: { light: '#eeeed2', dark: '#769656' },
+  ocean: { light: '#cce5ff', dark: '#66a3ff' },
+  forest: { light: '#d1e7dd', dark: '#528b8b' },
+  sunset: { light: '#ffebcc', dark: '#ff8c66' },
+};
+
 const Play: React.FC = () => {
-  const [gameState, setGameState] = useState('loading'); // 'loading', 'setup', 'playing', 'prompt'
+  const [gameState, setGameState] = useState('loading'); // 'loading', 'setup', 'playing', 'prompt', 'promotion'
   const [game, setGame] = useState(new Chess());
   const [engine, setEngine] = useState<Worker | null>(null);
   const [boardOrientation, setBoardOrientation] = useState<'white' | 'black'>('white');
@@ -23,12 +30,27 @@ const Play: React.FC = () => {
   const [engineReady, setEngineReady] = useState(false);
   const [engineName, setEngineName] = useState<'stockfish' | 'lc0' | 'ShashChess' | 'Mali Brothers'>('stockfish');
   const [moveFrom, setMoveFrom] = useState('');
+  const [moveTo, setMoveTo] = useState('');
   const [optionSquares, setOptionSquares] = useState({});
   const [moveHistory, setMoveHistory] = useState<string[]>([]);
   const [viewingMove, setViewingMove] = useState<number | null>(null);
   const [reviewFen, setReviewFen] = useState('');
   const [showCheckPopup, setShowCheckPopup] = useState(false);
   const [showCheckmatePopup, setShowCheckmatePopup] = useState(false);
+  const [boardTheme, setBoardTheme] = useState<keyof typeof themes>('classic');
+
+  // Load theme from local storage
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('chessBoardTheme') as keyof typeof themes;
+    if (savedTheme && themes[savedTheme]) {
+      setBoardTheme(savedTheme);
+    }
+  }, []);
+
+  // Save theme to local storage
+  useEffect(() => {
+    localStorage.setItem('chessBoardTheme', boardTheme);
+  }, [boardTheme]);
 
   // Load game from local storage
   useEffect(() => {
@@ -169,8 +191,7 @@ const Play: React.FC = () => {
     }
   };
 
-  // Abstract move making logic to be reused
-  const makeMove = (move: { from: string; to: string; promotion?: string }) => {
+  const makeMove = (move: { from: string; to: string; promotion?: PieceSymbol }) => {
     const gameCopy = new Chess(game.fen());
     const result = gameCopy.move(move);
     if (result) {
@@ -183,6 +204,25 @@ const Play: React.FC = () => {
         }
     }
     return result;
+  }
+
+  function handleMove(from: Square, to: Square) {
+    const gameCopy = new Chess(game.fen());
+    const piece = gameCopy.get(from);
+    if (
+      piece?.type === 'p' &&
+      ((piece.color === 'w' && from[1] === '7' && to[1] === '8') ||
+        (piece.color === 'b' && from[1] === '2' && to[1] === '1'))
+    ) {
+      setMoveFrom(from);
+      setMoveTo(to);
+      setGameState('promotion');
+      return;
+    }
+    
+    makeMove({ from, to });
+    setMoveFrom('');
+    setOptionSquares({});
   }
 
   function onSquareClick(square: Square) {
@@ -231,19 +271,26 @@ const Play: React.FC = () => {
             showMoves(square);
         }
     } else {
-        makeMove({ from: moveFrom, to: square, promotion: 'q' });
-        setMoveFrom('');
-        setOptionSquares({});
+        handleMove(moveFrom as Square, square);
     }
   }
 
   const onDrop = (sourceSquare: Square, targetSquare: Square): boolean => {
     if (viewingMove !== null || thinking || gameState !== 'playing' || game.isGameOver()) return false;
-    const move = makeMove({ from: sourceSquare, to: targetSquare, promotion: 'q' });
-    setMoveFrom('');
-    setOptionSquares({});
-    return move !== null;
+    handleMove(sourceSquare, targetSquare);
+    return true;
   };
+
+  function onPromotionPieceSelect(piece?: PieceSymbol) {
+    if (piece) {
+      makeMove({ from: moveFrom, to: moveTo, promotion: piece });
+    }
+    setMoveFrom('');
+    setMoveTo('');
+    setGameState('playing');
+    setOptionSquares({});
+    return true;
+  }
 
   const resetGame = () => {
     setGameState('setup');
@@ -390,11 +437,31 @@ const Play: React.FC = () => {
               onSquareClick={onSquareClick}
               customSquareStyles={optionSquares}
               boardOrientation={boardOrientation}
-              arePiecesDraggable={viewingMove === null && !thinking && !game.isGameOver() && game.turn() === boardOrientation[0]}
-              customDarkSquareStyle={{ backgroundColor: '#769656' }}
-              customLightSquareStyle={{ backgroundColor: '#eeeed2' }}
+              arePiecesDraggable={gameState === 'playing' && viewingMove === null && !thinking && !game.isGameOver() && game.turn() === boardOrientation[0]}
+              customDarkSquareStyle={{ backgroundColor: themes[boardTheme].dark }}
+              customLightSquareStyle={{ backgroundColor: themes[boardTheme].light }}
               customDropSquareStyle={{ boxShadow: 'inset 0 0 1px 4px rgba(186,202,68,0.7)' }}
+              onPromotionPieceSelect={onPromotionPieceSelect}
+              promotionDialogVariant="modal"
             />
+            {gameState === 'promotion' && (
+              <div className="absolute inset-0 bg-background/80 flex justify-center items-center">
+                <div className="bg-card p-8 rounded-lg shadow-2xl text-center">
+                  <h2 className="text-2xl font-bold mb-4">Promote Pawn</h2>
+                  <div className="flex justify-center gap-4">
+                    {['q', 'r', 'b', 'n'].map((piece) => (
+                      <button
+                        key={piece}
+                        onClick={() => onPromotionPieceSelect(piece as PieceSymbol)}
+                        className="w-16 h-16 rounded-lg bg-secondary hover:bg-accent flex justify-center items-center text-4xl font-bold"
+                      >
+                        {piece.toUpperCase()}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
             {thinking && (
               <div className="absolute inset-0 bg-background/80 flex justify-center items-center">
                   <div className="text-xl font-semibold flex items-center gap-2 text-primary">
@@ -442,6 +509,22 @@ const Play: React.FC = () => {
                     <FaFlipboard />
                     <span>Flip Board</span>
                 </button>
+            </div>
+             <div className="mt-4">
+                <h3 className="text-xl font-bold text-center text-primary mb-2">Board Theme</h3>
+                <div className="grid grid-cols-2 gap-2">
+                    {Object.keys(themes).map((theme) => (
+                        <button
+                            key={theme}
+                            onClick={() => setBoardTheme(theme as keyof typeof themes)}
+                            className={`p-2 rounded-lg text-sm font-semibold transition-all ${
+                                boardTheme === theme ? 'bg-primary text-primary-foreground scale-105' : 'bg-secondary hover:bg-accent'
+                            }`}
+                        >
+                            {theme.charAt(0).toUpperCase() + theme.slice(1)}
+                        </button>
+                    ))}
+                </div>
             </div>
             <div className="mt-4">
                 <h3 className="text-xl font-bold text-center text-primary mb-2">Move History</h3>
