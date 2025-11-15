@@ -187,7 +187,8 @@ const Play: React.FC = () => {
     if (boardOrientation === 'black') {
       setThinking(true);
       engine?.postMessage(`position fen ${newGame.fen()}`);
-      engine?.postMessage('go depth 15');
+      const depth = difficulty === 'easy' ? 5 : difficulty === 'medium' ? 10 : 15;
+      engine?.postMessage(`go depth ${depth}`);
     }
   };
 
@@ -200,7 +201,8 @@ const Play: React.FC = () => {
         if (!gameCopy.isGameOver()) {
             setThinking(true);
             engine?.postMessage(`position fen ${gameCopy.fen()}`);
-            engine?.postMessage('go depth 15');
+            const depth = difficulty === 'easy' ? 5 : difficulty === 'medium' ? 10 : 15;
+            engine?.postMessage(`go depth ${depth}`);
         }
     }
     return result;
@@ -277,6 +279,14 @@ const Play: React.FC = () => {
 
   const onDrop = (sourceSquare: Square, targetSquare: Square): boolean => {
     if (viewingMove !== null || thinking || gameState !== 'playing' || game.isGameOver()) return false;
+    
+    const gameCopy = new Chess(game.fen());
+    const move = gameCopy.move({ from: sourceSquare, to: targetSquare, promotion: 'q' });
+
+    if (move === null) {
+      return false; // illegal move
+    }
+
     handleMove(sourceSquare, targetSquare);
     return true;
   };
