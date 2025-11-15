@@ -20,7 +20,6 @@ import Loader from "./components/ui/Loader";
 import Play from "./pages/Play";
 import AlumniPage from "./pages/AlumniPage";
 import ContactPage from "./pages/ContactPage";
-import Watermark from "./components/Watermark";
 
 const queryClient = new QueryClient();
 
@@ -84,7 +83,6 @@ const App = () => {
           <TopBar />
           <ScrollToTop />
           <div className="min-h-screen bg-background flex flex-col">
-            <Watermark />
             {loaderMounted && <Loader visible={loaderVisible} />}
             <Header />
             <main className="flex-1">
