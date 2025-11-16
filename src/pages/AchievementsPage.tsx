@@ -29,7 +29,32 @@ const AchievementsPage = () => {
         }
 
         if (data) {
-          setAchievements(data as Achievement[]);
+          const processedAchievements = data.map((achievement) => {
+            const { images: imagesData, ...rest } = achievement;
+            let imageLinks: string[] = [];
+
+            if (Array.isArray(imagesData)) {
+              // Data is already a proper array
+              imageLinks = imagesData;
+            } else if (typeof imagesData === 'string') {
+              const trimmedString = imagesData.trim();
+              if (trimmedString.startsWith('[') && trimmedString.endsWith('J')) {
+                // Data is a JSON array string, e.g., "[\"url1\", \"url2\"]"
+                try {
+                  imageLinks = JSON.parse(trimmedString);
+                } catch (e) {
+                  console.error('Failed to parse images JSON string:', e);
+                  imageLinks = [];
+                }
+              } else if (trimmedString.length > 0) {
+                // Data is a single URL string, e.g., "https://.../image.png"
+                imageLinks = [trimmedString];
+              }
+            }
+            
+            return { ...rest, images: imageLinks };
+          });
+          setAchievements(processedAchievements);
         }
       } catch (error) {
         console.error('Error fetching achievements:', error);
