@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Globe } from 'lucide-react';
+import { Mail, Phone, MapPin, Globe, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 import footerData from '../../data/footer.json';
 
 const Footer = () => {
@@ -50,6 +50,21 @@ const Footer = () => {
               >
                 <Globe className="h-5 w-5" />
               </a>
+              {footerData.socials.map((social) => (
+                <a
+                  key={social.name}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className=" hover:text-primary transition-colors"
+                  aria-label={social.name}
+                >
+                  {social.icon === 'facebook' && <Facebook className="h-5 w-5" />}
+                  {social.icon === 'instagram' && <Instagram className="h-5 w-5" />}
+                  {social.icon === 'linkedin' && <Linkedin className="h-5 w-5" />}
+                  {social.icon === 'email' && <Mail className="h-5 w-5" />}
+                </a>
+              ))}
             </div>
           </div>
 

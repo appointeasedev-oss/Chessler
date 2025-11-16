@@ -10,6 +10,12 @@
     "email": "chesslerclub@gmail.com",
     "phone": "+91-9314062064"
   },
+  "socials": [
+    { "name": "Facebook", "url": "https://www.facebook.com/ChesslerClub/", "icon": "facebook" },
+    { "name": "Instagram", "url": "https://www.instagram.com/chessler_chess_club/", "icon": "instagram" },
+    { "name": "LinkedIn", "url": "https://in.linkedin.com/in/shubham-saini-070682118", "icon": "linkedin" },
+    { "name": "Email", "url": "mailto:chesslerclub@gmail.com", "icon": "email" }
+  ],
   "navigation": [
     { "name": "About", "path": "/about" },
     { "name": "Events", "path": "/events" },
@@ -19,7 +25,6 @@
     { "name": "Play Vs Computer", "path": "/play" },
     { "name": "Alumni", "path": "/alumni" },
     { "name": "Contact", "path": "/contact" }
-    
   ],
   "copyright": {
     "text": "Chessler Chess Club | Academy. All rights reserved.",
