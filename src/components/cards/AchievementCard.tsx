@@ -1,4 +1,4 @@
-import { Calendar, Award, MapPin, Images } from 'lucide-react';
+import { Calendar, Award, MapPin } from 'lucide-react';
 import OptimizedImage from '@/components/OptimizedImage';
 
 interface AchievementCardProps {
@@ -8,22 +8,12 @@ interface AchievementCardProps {
   description?: string;
   images?: string[];
   location?: string;
-  onCardClick?: () => void;
 }
 
-const AchievementCard = ({ eventName, position, year, description, images, location, onCardClick }: AchievementCardProps) => {
-  const handleCardClick = () => {
-    if (images && images.length > 0 && onCardClick) {
-      onCardClick();
-    }
-  };
-
+const AchievementCard = ({ eventName, position, year, description, images, location }: AchievementCardProps) => {
   return (
     <div 
-      className={`group relative overflow-hidden rounded-xl bg-card border border-border hover:border-foreground/20 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 h-full flex flex-col ${
-        images && images.length > 0 ? 'cursor-pointer' : ''
-      }`}
-      onClick={handleCardClick}
+      className="group relative overflow-hidden rounded-xl bg-card border border-border hover:border-foreground/20 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 h-full flex flex-col"
     >
       {images && images.length > 0 && (
         <div className="aspect-video overflow-hidden relative">
@@ -33,14 +23,6 @@ const AchievementCard = ({ eventName, position, year, description, images, locat
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             loading="lazy"
           />
-          <div className="absolute top-4 right-4 flex gap-2">
-            {images.length > 1 && (
-              <div className="px-2 py-1 bg-black/70 text-white rounded-full text-xs font-medium flex items-center gap-1">
-                <Images className="h-3 w-3" />
-                {images.length}
-              </div>
-            )}
-          </div>
         </div>
       )}
 

@@ -10,15 +10,9 @@ interface EventCardProps {
   joiningUrl?: string;
   date?: string;
   status?: string;
-  onCardClick?: () => void;
 }
 
-const EventCard = ({ eventName, image, images, description, joiningUrl, date, status, onCardClick }: EventCardProps) => {
-  const handleCardClick = () => {
-    if (images && images.length > 0 && onCardClick) {
-      onCardClick();
-    }
-  };
+const EventCard = ({ eventName, image, images, description, joiningUrl, date, status }: EventCardProps) => {
   const getStatusConfig = (status?: string) => {
     switch (status) {
       case 'Registrations open':
@@ -42,10 +36,7 @@ const EventCard = ({ eventName, image, images, description, joiningUrl, date, st
   return (
     <>
       <div
-        className={`group relative overflow-hidden rounded-xl bg-card border border-border hover:border-foreground/20 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 h-full flex flex-col ${
-          images && images.length > 0 ? 'cursor-pointer' : ''
-        }`}
-        onClick={handleCardClick}
+        className="group relative overflow-hidden rounded-xl bg-card border border-border hover:border-foreground/20 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 h-full flex flex-col"
       >
       {/* Show image section only if image src is provided in JSON */}
       {shouldShowImage && (

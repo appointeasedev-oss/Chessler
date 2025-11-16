@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import AchievementCard from '@/components/cards/AchievementCard';
-import { ImageModal } from '@/components/ui/ImageModal';
 import { supabase } from '@/utils/supabase';
 
 interface Achievement {
@@ -15,19 +14,7 @@ interface Achievement {
 
 const AchievementsPage = () => {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
-  const [selectedAchievement, setSelectedAchievement] = useState<Achievement | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-
-  const handleAchievementClick = (achievement: Achievement) => {
-    setSelectedAchievement(achievement);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedAchievement(null);
-  };
 
   useEffect(() => {
     const fetchAchievements = async () => {
@@ -84,19 +71,10 @@ const AchievementsPage = () => {
               description={achievement.description}
               images={achievement.images}
               location={achievement.location}
-              onCardClick={() => handleAchievementClick(achievement)}
             />
           ))}
         </div>
       </div>
-
-      <ImageModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        images={selectedAchievement?.images || []}
-        title={selectedAchievement?.event_name || ''}
-        description={selectedAchievement?.description}
-      />
     </div>
   );
 };

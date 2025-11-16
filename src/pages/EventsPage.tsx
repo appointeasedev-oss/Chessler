@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import EventCard from '@/components/cards/EventCard';
-import { ImageModal } from '@/components/ui/ImageModal';
 import { supabase } from '@/utils/supabase';
 
 interface Event {
@@ -16,19 +15,7 @@ interface Event {
 
 const EventsPage = () => {
   const [events, setEvents] = useState<Event[]>([]);
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-
-  const handleEventClick = (event: Event) => {
-    setSelectedEvent(event);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedEvent(null);
-  };
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -94,7 +81,6 @@ const EventsPage = () => {
                   joiningUrl={event.joining_url}
                   date={event.date}
                   status={event.status}
-                  onCardClick={() => handleEventClick(event)}
                 />
               ))}
             </div>
@@ -116,7 +102,6 @@ const EventsPage = () => {
                   joiningUrl={event.joining_url}
                   date={event.date}
                   status={event.status}
-                  onCardClick={() => handleEventClick(event)}
                 />
               ))}
             </div>
@@ -138,22 +123,12 @@ const EventsPage = () => {
                   joiningUrl={event.joining_url}
                   date={event.date}
                   status={event.status}
-                  onCardClick={() => handleEventClick(event)}
                 />
               ))}
             </div>
           </div>
         )}
       </div>
-
-      {/* Modal rendered at page level */}
-      <ImageModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        images={selectedEvent?.images || []}
-        title={selectedEvent?.event_name || ''}
-        description={selectedEvent?.description}
-      />
     </div>
   );
 };
