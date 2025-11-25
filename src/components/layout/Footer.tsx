@@ -110,7 +110,7 @@ const Footer = () => {
             </span>
             <span>
               <a
-                href="https://www.instagram.com/idk_satvik.s/"
+                href="https://www.instagram.com/sparrow_ai_solutions/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm hover:text-[#FFA500] transition-colors no-underline"
