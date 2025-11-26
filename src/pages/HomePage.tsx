@@ -1,5 +1,5 @@
 import Hero from "@/components/sections/Hero";
-import EventsPreview from "@/components/sections/EventsPreview";
+import AchievementsPreview from "@/components/sections/AchievementsPreview";
 import SponsorsSection from "@/components/sections/SponsorsSection";
 import ContactSection from "@/components/sections/ContactSection";
 
@@ -36,7 +36,7 @@ const HomePage = () => {
     <div className="min-h-screen">
       <Hero />
       <FounderSection />
-      <EventsPreview />
+      <AchievementsPreview />
       <ContactSection />
       <SponsorsSection />
     </div>
