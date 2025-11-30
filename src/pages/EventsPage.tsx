@@ -30,7 +30,29 @@ const EventsPage = () => {
         }
 
         if (data) {
-          setEvents(data as Event[]);
+          const processedEvents = data.map((event) => {
+            const { images: imagesData, ...rest } = event;
+            let imageLinks: string[] = [];
+
+            if (Array.isArray(imagesData)) {
+              imageLinks = imagesData;
+            } else if (typeof imagesData === 'string') {
+              const trimmedString = imagesData.trim();
+              if (trimmedString.startsWith('[') && trimmedString.endsWith(']')) {
+                try {
+                  imageLinks = JSON.parse(trimmedString);
+                } catch (e) {
+                  console.error('Failed to parse images JSON string:', e);
+                  imageLinks = [];
+                }
+              } else if (trimmedString.length > 0) {
+                imageLinks = [trimmedString];
+              }
+            }
+            
+            return { ...rest, images: imageLinks } as Event;
+          });
+          setEvents(processedEvents);
         }
       } catch (error) {
         console.error('Error fetching events:', error);
@@ -41,10 +63,6 @@ const EventsPage = () => {
 
     fetchEvents();
   }, []);
-
-  const registrationsOpenEvents = events.filter(event => event.status === 'Registrations open');
-  const upcomingEvents = events.filter(event => event.status === 'upcoming');
-  const pastEvents = events.filter(event => event.status === 'completed' || event.status === 'Completed');
 
   if (loading) {
     return (
@@ -66,54 +84,11 @@ const EventsPage = () => {
           </p>
         </div>
 
-        {/* Registrations Open Events */}
-        {registrationsOpenEvents.length > 0 && (
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold text-foreground mb-8">Registrations Open</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {registrationsOpenEvents.map((event) => (
-                <EventCard
-                  key={event.id}
-                  eventName={event.event_name}
-                  image={event.image}
-                  images={event.images}
-                  description={event.description}
-                  joiningUrl={event.joining_url}
-                  date={event.date}
-                  status={event.status}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Upcoming Events */}
-        {upcomingEvents.length > 0 && (
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold text-foreground mb-8">Upcoming Events</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {upcomingEvents.map((event) => (
-                <EventCard
-                  key={event.id}
-                  eventName={event.event_name}
-                  image={event.image}
-                  images={event.images}
-                  description={event.description}
-                  joiningUrl={event.joining_url}
-                  date={event.date}
-                  status={event.status}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Past Events */}
-        {pastEvents.length > 0 && (
+        {events.length > 0 && (
           <div>
-            <h2 className="text-3xl font-bold text-foreground mb-8">Past Events</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-8">All Events</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {pastEvents.map((event) => (
+              {events.map((event) => (
                 <EventCard
                   key={event.id}
                   eventName={event.event_name}
