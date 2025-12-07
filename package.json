@@ -1,7 +1,7 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "chessler-chess-club",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -46,7 +46,6 @@
     "@supabase/supabase-js": "^2.80.0",
     "@tanstack/react-query": "^5.83.0",
     "@types/chess.js": "^0.13.7",
-    "@vercel/analytics": "^1.5.0",
     "chess.js": "^1.4.0",
     "chessboardjsx": "^2.4.7",
     "class-variance-authority": "^0.7.1",
