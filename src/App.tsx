@@ -30,7 +30,6 @@ const App = () => {
 
   const [loaderMounted, setLoaderMounted] = useState(true);
   const [loaderVisible, setLoaderVisible] = useState(true); 
-  const [siteData, setSiteData] = useState("Site data is currently loading...");
 
   useEffect(() => {
     const hideLoaderSequence = () => {
@@ -51,47 +50,9 @@ const App = () => {
     const fallback = setTimeout(hideLoaderSequence, 2000);
 
     return () => {
-      window.removeEventListener("load", hideLoaderSequence);
+      window.removeEventListener('load', hideLoaderSequence);
       clearTimeout(fallback);
     };
-  }, []);
-
-  // --- LIVE DATA FETCHING --- 
-  useEffect(() => {
-    // This is the function where you should fetch your live data from Supabase
-    // and from your site's pages. The chatbot is ready to use whatever data you provide here.
-    const fetchLiveSiteData = async () => {
-      try {
-        // **EXAMPLE:**
-        // 1. Fetch data from your Supabase tables
-        // const { data: achievements, error: achievementsError } = await supabase.from('achievements').select('*');
-        // const { data: events, error: eventsError } = await supabase.from('events').select('*');
-
-        // 2. Fetch data from your page components (if needed, though Supabase is better)
-        // This is more complex and might involve creating a shared data context.
-
-        // 3. Format the data into a single string for the AI.
-        //    This is where you combine all the data you fetched.
-        const formattedData = `
-          // --- You would format your live fetched data here ---
-          // Example: 
-          // About the Club: ${JSON.stringify(aboutData)}
-          // Recent Events: ${JSON.stringify(events)}
-          // Member Achievements: ${JSON.stringify(achievements)}
-        `;
-        
-        // For now, we are using the static data as a placeholder.
-        // Replace this with your live `formattedData`.
-        const staticData = await import('./lib/static-data');
-        setSiteData(staticData.chatbotData);
-
-      } catch (error) {
-        console.error("Error fetching live data for chatbot:", error);
-        setSiteData("Error loading site data. The chatbot may not have complete information.");
-      }
-    };
-
-    fetchLiveSiteData();
   }, []);
 
   return (
@@ -121,8 +82,7 @@ const App = () => {
             </main>
             <Footer />
           </div>
-          {/* The chatbot now receives the live siteData from the state */}
-          <Chatbot siteData={siteData} />
+          <Chatbot />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

@@ -1,0 +1,63 @@
+
+{
+  "about": {
+    "title": "About Chessler Chess Club",
+    "about_text": "Established on 2nd November 2021 by Shubham Saini, Chessler Chess Club in Vaishali Nagar, Jaipur, stands as one of the city’s leading Chess Academies and Clubs, offering both home-based and online coaching programs. Our mission is to create an effective and engaging learning environment that nurtures chess enthusiasts from beginners to professional-level players. We aim to cultivate critical thinking, patience, and sportsmanship through the art of chess.",
+    "team": {
+      "title": "Our Team",
+      "text": "Our team comprises AICF-CIS Certified Trainers and FIDE-rated professional chess players, each with over 5 years of coaching experience and a deep understanding of modern chess training methods. Our coaches are dedicated to helping students realize their potential through personalized instruction, innovative techniques, and structured guidance."
+    },
+    "courses": {
+      "title": "Our Courses"
+    }
+  },
+  "alumni": [
+    {
+      "name": "Late Priyanshu Saini",
+      "role": "Chess Trainer, Jaipur",
+      "bio": "Late Priyanshu Saini was an inspiring figure in the chess community — a passionate chess player, professional coach, and International FIDE-rated player (Rating: 1535). As the Founder of The Chess School, Jaipur, he dedicated his life to promoting chess and nurturing young talents. His coaching excellence, sportsmanship, and kind personality left a lasting impression on everyone he mentored. Priyanshu’s legacy continues to inspire students and coaches at Chessler Chess Club, reminding us that chess is not just a game — it’s a lifelong journey of learning, discipline, and creativity.",
+      "photo": "/assets/file_00000000274c71fa9d849e0a5ea46a56.png",
+      "memoriam": "In loving memory of a true chess enthusiast and mentor."
+    }
+  ],
+  "founder": {
+    "name": "Shubham Saini",
+    "title": "AICF Chess Trainer (CIS - Chess in School Program) and International FIDE-rated player",
+    "experience": "Over 9 years of coaching experience and 18 years of passion for the game.",
+    "achievements": [
+      "Multiple district, state, and university titles",
+      "Competed at the national level",
+      "Participated in the South Asian Chess Championship 2016",
+      "Trained many young talents who have shined at district, state, and national tournaments"
+    ],
+    "goal": "To inspire every student to think deeply, play confidently, and enjoy the beauty of chess."
+  },
+  "club_achievements": [
+    {
+      "name": "Kanishq Agarwal",
+      "year": 2025,
+      "rank": 2,
+      "description": "Won 2nd Rank in u07 Agr Category prize in 2nd Open Jaipur Club Open Rapid Chess Tournament 2025",
+      "location": "Jaipur, Rajasthan"
+    },
+    {
+      "name": "Rayansh Dadhich",
+      "years": "2023, 2024",
+      "ranks": "1 & 2",
+      "description": "Gained valuable experience and competitive rating exposure through participation in a FIDE Rating National Level Chess Tournament. A key member of a successful league team, contributing to securing a Sliver Medal across multiple seasons (Seasons 2, 3, and 4) of the Doctors Chess League. 1st Prize winner in the Grade 3 School Level Chess Competition. 2nd Prize winner in the Grade 4 School Level Chess Competition.",
+      "location": "Jaipur"
+    },
+    {
+      "name": "Rishi Chaturvedi",
+      "year": 2022,
+      "rank": 1,
+      "description": "District U-8 Runner - Up 2022 Jaipur Rajasthan",
+      "location": "Jaipur, Rajasthan"
+    }
+  ],
+  "contact": {
+    "address": "A30b Jaanki Vihar, Dhawas Road, Heerapura Jaipur",
+    "email": "chesslerclub@gmail.com",
+    "phone": "+91-9314062064"
+  }
+}

@@ -1,303 +1,189 @@
+"use client";
 
-import React, { useState, useRef, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { MessageSquare, X, Send, Bot, User } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Bot, X } from "lucide-react";
 
-// Helper for inline elements like bold and links
-const renderInline = (text: string) => {
-    const regex = /(\s)|(\n)|(\*\*.*?\*\*)|(https?:\/\/[^\s]+)/g;
-    const parts = text.split(regex).filter(Boolean);
+const API_KEY =
+  "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";
 
-    return parts.map((part, index) => {
-        if (part.startsWith('**') && part.endsWith('**')) {
-            return <strong key={index}>{part.slice(2, -2)}</strong>;
-        }
-        if (part.match(/^https?:\/\//)) {
-            return <a key={index} href={part} target="_blank" rel="noopener noreferrer" className="text-primary underline hover:text-primary/90">{part}</a>;
-        }
-         if (part === '\n') {
-            return <br key={index} />;
-        }
-        return <span key={index}>{part}</span>;
-    });
+const MODEL_LIST = [
+  "amazon/nova-2-lite-v1:free",
+  "arcee-ai/trinity-mini:free",
+  "tngtech/tng-r1t-chimera:free",
+  "allenai/olmo-3-32b-think:free",
+  "kwaipilot/kat-coder-pro:free",
+  "nvidia/nemotron-nano-12b-v2-vl:free",
+  "alibaba/tongyi-deepresearch-30b-a3b:free",
+  "meituan/longcat-flash-chat:free",
+  "nvidia/nemotron-nano-9b-v2:free",
+  "openai/gpt-oss-120b:free",
+  "openai/gpt-oss-20b:free",
+  "z-ai/glm-4.5-air:free",
+  "qwen/qwen3-coder:free",
+  "moonshotai/kimi-k2:free",
+  "cognitivecomputations/dolphin-mistral-24b-venice-edition:free",
+  "google/gemma-3n-e2b-it:free",
+  "tngtech/deepseek-r1t2-chimera:free",
+  "google/gemma-3n-e4b-it:free",
+  "qwen/qwen3-4b:free",
+  "qwen/qwen3-235b-a22b:free",
+  "tngtech/deepseek-r1t-chimera:free",
+  "mistralai/mistral-small-3.1-24b-instruct:free",
+  "google/gemma-3-4b-it:free",
+  "google/gemma-3-12b-it:free",
+  "google/gemma-3-27b-it:free",
+  "google/gemini-2.0-flash-exp:free",
+  "meta-llama/llama-3.3-70b-instruct:free",
+  "meta-llama/llama-3.2-3b-instruct:free",
+  "nousresearch/hermes-3-llama-3.1-405b:free",
+  "mistralai/mistral-7b-instruct:free",
+];
+
+const CHESSLER_DATA = {
+  "about": {
+    "title": "About Chessler Chess Club",
+    "about_text": "Established on 2nd November 2021 by Shubham Saini, Chessler Chess Club in Vaishali Nagar, Jaipur...",
+    "team": {
+      "title": "Our Team",
+      "text": "Our team comprises AICF-CIS Certified Trainers and FIDE-rated professional chess players..."
+    },
+    "courses": { "title": "Our Courses" }
+  },
+  "alumni": [
+    {
+      "name": "Late Priyanshu Saini",
+      "role": "Chess Trainer, Jaipur",
+      "bio": "Late Priyanshu Saini was an inspiring figure...",
+      "photo": "/assets/file_00000000274c71fa9d849e0a5ea46a56.png",
+      "memoriam": "In loving memory of a true chess enthusiast and mentor."
+    }
+  ],
+  "founder": {
+    "name": "Shubham Saini",
+    "title": "AICF Chess Trainer...",
+    "experience": "Over 9 years of coaching experience...",
+    "achievements": [
+      "Multiple district, state, and university titles",
+      "Competed at the national level",
+      "South Asian Chess Championship 2016"
+    ],
+    "goal": "To inspire students to think deeply..."
+  },
+  "club_achievements": [
+    {
+      "name": "Kanishq Agarwal",
+      "year": 2025,
+      "rank": 2,
+      "description": "2nd Rank in u07 category...",
+      "location": "Jaipur, Rajasthan"
+    }
+  ],
+  "contact": {
+    "address": "A30b Jaanki Vihar, Dhawas Road, Heerapura Jaipur",
+    "email": "chesslerclub@gmail.com",
+    "phone": "+91-9314062064"
+  }
 };
 
-// Helper component to parse and render clickable links and basic markdown
-const MessageContent = ({ text }: { text: string }) => {
-    const paragraphs = text.split(/\n\s*\n/);
+async function askAI(userMessage: string) {
+  for (const model of MODEL_LIST) {
+    try {
+      console.log(`🔄 Trying model: ${model}`);
 
-    return (
-        <div className="text-sm leading-relaxed space-y-2 text-black">
-            {paragraphs.map((para, pIndex) => {
-                const listItems = para.split(/\n\s*-\s/);
-                if (listItems.length > 1 && listItems[0].trim() === '') {
-                    return (
-                        <ul key={pIndex} className="list-none space-y-1 pl-1">
-                            {listItems.filter(item => item.trim() !== '').map((item, lIndex) => (
-                                <li key={lIndex} className="flex items-start">
-                                    <span className="mr-2 mt-1 text-primary">&bull;</span>
-                                    <span>{renderInline(item)}</span>
-                                </li>
-                            ))}
-                        </ul>
-                    );
-                }
-                return <p key={pIndex}>{renderInline(para)}</p>;
-            })}
-        </div>
-    );
-};
+      const response = await fetch("https://api.openrouter.ai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${API_KEY}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages: [
+            {
+              role: "system",
+              content:
+                "You are Chessler AI. Always use provided Chessler club data when answering questions.",
+            },
+            {
+              role: "user",
+              content:
+                userMessage +
+                "\n\n------DATA JSON------\n" +
+                JSON.stringify(CHESSLER_DATA),
+            },
+          ],
+        }),
+      });
 
-interface ChatbotProps {
-  siteData: string;
+      if (!response.ok) throw new Error("busy");
+
+      const data = await response.json();
+      return data.choices[0].message.content;
+    } catch (err) {
+      console.warn(`⚠️ Model busy: ${model}, trying next...`);
+      continue;
+    }
+  }
+
+  return "⚠️ All free models are busy, please try again later.";
 }
 
-const API_KEYS = [
-    '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',
-    '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'
-];
-const REGISTRATION_FORM_LINK = "https://forms.gle/JoDkJv79wY7yvzfV8";
-const MODEL_FALLBACK_CHAIN = [
-    "google/gemini-2.0-flash-exp:free",
-    "mistralai/mistral-small-3.1-24b-instruct:free",
-    "meta-llama/llama-3.3-70b-instruct:free",
-    "amazon/nova-2-lite-v1:free",
-];
-
-const Chatbot: React.FC<ChatbotProps> = ({ siteData }) => {
+export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<{ sender: 'user' | 'bot'; text: string }[]>([]);
-  const [inputValue, setInputValue] = useState('');
-  const [loading, setLoading] = useState(false);
-  const chatContainerRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState<any[]>([
+    {
+      role: "assistant",
+      content:
+        "Hello! I'm Chessler AI Assistant. Ask me about courses, coaching, fees, trainers, or achievements.",
+    },
+  ]);
 
-  useEffect(() => {
-    const handleResize = () => setIsDesktop(window.innerWidth > 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const sendMessage = async () => {
+    if (!input.trim()) return;
 
-  useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-    }
-  }, [messages, loading]);
+    const user = { role: "user", content: input };
+    setMessages((m) => [...m, user]);
 
-  useEffect(() => {
-    if (isOpen) {
-        if (messages.length === 0) {
-            setMessages([
-                { sender: 'bot', text: "Hello! I'm the Chessler AI assistant. How can I help you with events, courses, or joining the club?" }
-            ]);
-        }
-        setTimeout(() => inputRef.current?.focus(), 300);
-    }
-  }, [isOpen, messages.length]);
+    const reply = await askAI(input);
+    setMessages((m) => [...m, { role: "assistant", content: reply }]);
 
-  const getSystemPrompt = () => {
-    return `You are the 'Chessler AI Assistant', a helpful and concise AI for the 'Chessler Chess Club' website.\n- Your answers must be short and to the point.\n- **Format your responses using Markdown, including lists for achievements/events and bolding for emphasis.**\n- Use the following live site data to answer questions: ${siteData}.\n- When asked about registration, joining, or signing up, you MUST provide this exact link: ${REGISTRATION_FORM_LINK}.\n- If you cannot answer using the provided data, politely say: "I'm not sure about that. You can find more information on the website or contact us directly."`;
+    setInput("");
   };
-
-  const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!inputValue.trim() || loading) return;
-
-    const userMessage = { sender: 'user' as const, text: inputValue };
-    setMessages(prev => [...prev, userMessage, { sender: 'bot', text: '' }]);
-    setInputValue('');
-    setLoading(true);
-
-    let responseSent = false;
-
-    for (const apiKey of API_KEYS) {
-        if (responseSent) break;
-
-        for (const model of MODEL_FALLBACK_CHAIN) {
-            if (responseSent) break;
-            try {
-                const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${apiKey}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        model: model,
-                        stream: true,
-                        messages: [...messages, userMessage].slice(-8).map(m => ({ role: m.sender === 'bot' ? 'assistant' : 'user', content: m.text }))
-                    })
-                });
-
-                if (!response.ok || !response.body) {
-                    if (response.status === 401) {
-                         console.warn(`API key ending with ...${apiKey.slice(-4)} failed with auth error. Trying next key.`);
-                         break; // This key is bad, break from model loop to try next key.
-                    }
-                    console.warn(`Model ${model} failed with status: ${response.statusText}`);
-                    continue; // Try the next model with the same key.
-                }
-
-                const reader = response.body.getReader();
-                const decoder = new TextDecoder();
-                let buffer = '';
-
-                while (true) {
-                    const { value, done } = await reader.read();
-                    if (done) {
-                        responseSent = true;
-                        break;
-                    }
-
-                    buffer += decoder.decode(value, { stream: true });
-                    const lines = buffer.split('\n');
-                    buffer = lines.pop() || '';
-
-                    for (const line of lines) {
-                        if (line.startsWith('data: ')) {
-                            const dataStr = line.substring(6).trim();
-                            if (dataStr === '[DONE]') {
-                                responseSent = true;
-                                break;
-                            }
-                            try {
-                                const parsed = JSON.parse(dataStr);
-                                const delta = parsed.choices?.[0]?.delta?.content;
-                                if (delta) {
-                                    setMessages(prev => {
-                                        const newMessages = [...prev];
-                                        newMessages[newMessages.length - 1].text += delta;
-                                        return newMessages;
-                                    });
-                                }
-                            } catch (e) { /* Ignore JSON parsing errors */ }
-                        }
-                    }
-                    if (responseSent) break;
-                }
-            } catch (error) {
-                console.error(`Error with model ${model} and key ending in ...${apiKey.slice(-4)}:`, error);
-            }
-        }
-    }
-
-
-    if (!responseSent) {
-        setMessages(prev => {
-            const newMessages = [...prev];
-            const lastMessage = newMessages[newMessages.length - 1];
-            if (lastMessage && lastMessage.text === '') {
-                lastMessage.text = "Sorry, I couldn't get a response. Please try again.";
-            }
-            return newMessages;
-        });
-    }
-
-    setLoading(false);
-  };
-
-  const desktopVariants = { hidden: { x: '100%' }, visible: { x: '0%' } };
-  const mobileVariants = { hidden: { y: '100%' }, visible: { y: '0%' } };
 
   return (
     <>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            variants={isDesktop ? desktopVariants : mobileVariants}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            transition={{ duration: 0.4, ease: [0.25, 1, 0.5, 1] }}
-            className="fixed inset-0 z-50 flex flex-col bg-background md:inset-auto md:top-0 md:bottom-0 md:right-0 md:w-full md:max-w-md md:border-l"
-          >
-            <header className="flex items-center justify-between p-4 border-b flex-shrink-0">
-              <h3 className="text-lg font-bold flex items-center gap-2">
-                <Bot className="text-primary" size={22} />
-                Chessler AI Assistant
-              </h3>
-              <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
-                <X className="h-5 w-5" />
-                <span className="sr-only">Close Chat</span>
-              </Button>
-            </header>
+      {isOpen && (
+        <div className="fixed bottom-0 right-0 bg-white border w-full max-w-md h-[80vh] flex flex-col z-50">
+          <div className="p-3 border-b flex justify-between">
+            <h2 className="font-bold flex items-center gap-2">
+              <Bot size={20} /> Chessler AI
+            </h2>
+            <Button size="icon" variant="ghost" onClick={() => setIsOpen(false)}>
+              <X />
+            </Button>
+          </div>
 
-            <div ref={chatContainerRef} className="flex-1 p-4 overflow-y-auto space-y-6">
-              {messages.map((msg, index) => (
-                <div key={index} className={`flex items-start gap-3.5 ${msg.sender === 'user' ? 'justify-end' : ''}`}>
-                   {msg.sender === 'bot' && <div className="bg-primary text-primary-foreground p-2.5 rounded-full flex-shrink-0"><Bot size={18} /></div>}
-                  <div className={`max-w-[85%] p-3 rounded-xl ${msg.sender === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'}`}>
-                     <MessageContent text={msg.text} />
-                  </div>
-                  {msg.sender === 'user' && <div className="bg-muted text-muted-foreground p-2.5 rounded-full flex-shrink-0"><User size={18} /></div>}
-                </div>
-              ))}
-              {loading && messages[messages.length - 1]?.text === '' && (
-                <div className="flex items-start gap-3.5">
-                  <div className="bg-primary text-primary-foreground p-2.5 rounded-full flex-shrink-0 animate-pulse"><Bot size={18} /></div>
-                  <div className="max-w-[85%] p-3 rounded-lg bg-muted flex items-center space-x-1.5">
-                    <div className="h-2 w-2 bg-foreground/30 rounded-full animate-pulse"></div>
-                    <div className="h-2 w-2 bg-foreground/30 rounded-full animate-pulse [animation-delay:0.2s]"></div>
-                    <div className="h-2 w-2 bg-foreground/30 rounded-full animate-pulse [animation-delay:0.4s]"></div>
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            <form onSubmit={handleSendMessage} className="p-4 border-t bg-background/80 backdrop-blur-sm flex-shrink-0">
-              <div className="relative">
-                <Input
-                    ref={inputRef}
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    placeholder="Ask anything..."
-                    className="pr-12 h-12 rounded-full bg-muted focus-visible:ring-primary/40 text-black placeholder:text-muted-foreground"
-                    disabled={loading}
-                />
-                <Button 
-                  type="submit" 
-                  size="icon" 
-                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full w-9 h-9"
-                  disabled={loading || !inputValue.trim()}
-                  aria-label="Send Message"
-                >
-                    <Send className="h-5 w-5" />
-                </Button>
+          <div className="flex-1 overflow-y-auto p-3 space-y-3">
+            {messages.map((m, i) => (
+              <div key={i} className="p-2 bg-gray-100 rounded">
+                {m.content}
               </div>
-            </form>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            ))}
+          </div>
 
-      <motion.div
-        initial={{ scale: 0, rotate: 90 }}
-        animate={{ scale: 1, rotate: 0 }}
-        transition={{ delay: 0.5, type: 'spring', stiffness: 260, damping: 20 }}
-        className="fixed bottom-5 right-5 md:bottom-8 md:right-8 z-40"
-      >
-        <Button
-          onClick={() => setIsOpen(!isOpen)}
-          className="rounded-full w-16 h-16 shadow-lg flex items-center justify-center"
-          aria-label={isOpen ? "Close chat" : "Open chat"}
-        >
-          <AnimatePresence mode="wait">
-            <motion.div
-                key={isOpen ? 'x' : 'msg'}
-                initial={{ rotate: -90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: 90, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-            >
-             {isOpen ? <X size={28} /> : <MessageSquare size={28} />}
-            </motion.div>
-          </AnimatePresence>
-        </Button>
-      </motion.div>
+          <div className="p-3 flex gap-2 border-t">
+            <input
+              className="flex-1 border rounded p-2"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Ask something..."
+            />
+            <Button onClick={sendMessage}>Send</Button>
+          </div>
+        </div>
+      )}
     </>
   );
-};
-
-export default Chatbot;
+}
