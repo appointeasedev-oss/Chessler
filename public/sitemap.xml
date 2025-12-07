@@ -1,69 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- ===================================================== -->
+<!-- CHESSLER CHESS CLUB - OFFICIAL SITEMAP (BRAND LOCK)   -->
+<!-- Generated exclusively for Chessler Chess Club, Jaipur  -->
+<!-- No other publisher, company, or provider involved      -->
+<!-- ===================================================== -->
+
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Chessler Chess Club - HOME -->
   <url>
     <loc>https://chessler.vercel.app/</loc>
     <lastmod>2024-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <!-- Chessler Chess Club Pages -->
   <url>
     <loc>https://chessler.vercel.app/about</loc>
     <lastmod>2024-07-29</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
+
   <url>
     <loc>https://chessler.vercel.app/achievements</loc>
     <lastmod>2024-07-29</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
+
   <url>
     <loc>https://chessler.vercel.app/alumni</loc>
     <lastmod>2024-07-29</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
+
   <url>
     <loc>https://chessler.vercel.app/events</loc>
     <lastmod>2024-07-29</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
+
   <url>
     <loc>https://chessler.vercel.app/gallery</loc>
     <lastmod>2024-07-29</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
+
   <url>
     <loc>https://chessler.vercel.app/play</loc>
     <lastmod>2024-07-29</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
+
   <url>
     <loc>https://chessler.vercel.app/star-players</loc>
     <lastmod>2024-07-29</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
+
   <url>
     <loc>https://chessler.vercel.app/team</loc>
     <lastmod>2024-07-29</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
+
   <url>
     <loc>https://chessler.vercel.app/timeline</loc>
     <lastmod>2024-07-29</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
+
   <url>
     <loc>https://chessler.vercel.app/tutorials</loc>
     <lastmod>2024-07-29</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
+
 </urlset>
