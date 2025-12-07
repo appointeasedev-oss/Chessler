@@ -54,7 +54,10 @@ interface ChatbotProps {
   siteData: string;
 }
 
-const OPENROUTER_API_KEY = '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';
+const API_KEYS = [
+    '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',
+    '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'
+];
 const REGISTRATION_FORM_LINK = "https://forms.gle/JoDkJv79wY7yvzfV8";
 const MODEL_FALLBACK_CHAIN = [
     "google/gemini-2.0-flash-exp:free",
@@ -110,68 +113,77 @@ const Chatbot: React.FC<ChatbotProps> = ({ siteData }) => {
 
     let responseSent = false;
 
-    for (const model of MODEL_FALLBACK_CHAIN) {
+    for (const apiKey of API_KEYS) {
         if (responseSent) break;
-        try {
-            const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    model: model,
-                    stream: true,
-                    messages: [...messages, userMessage].slice(-8).map(m => ({ role: m.sender === 'bot' ? 'assistant' : 'user', content: m.text }))
-                })
-            });
 
-            if (!response.ok || !response.body) {
-                console.warn(`Model ${model} failed with status: ${response.statusText}`);
-                continue; // Try the next model
-            }
+        for (const model of MODEL_FALLBACK_CHAIN) {
+            if (responseSent) break;
+            try {
+                const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${apiKey}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        model: model,
+                        stream: true,
+                        messages: [...messages, userMessage].slice(-8).map(m => ({ role: m.sender === 'bot' ? 'assistant' : 'user', content: m.text }))
+                    })
+                });
 
-            const reader = response.body.getReader();
-            const decoder = new TextDecoder();
-            let buffer = '';
-
-            while (true) {
-                const { value, done } = await reader.read();
-                if (done) {
-                    responseSent = true;
-                    break;
-                }
-
-                buffer += decoder.decode(value, { stream: true });
-                const lines = buffer.split('\n');
-                buffer = lines.pop() || '';
-
-                for (const line of lines) {
-                    if (line.startsWith('data: ')) {
-                        const dataStr = line.substring(6).trim();
-                        if (dataStr === '[DONE]') {
-                            responseSent = true;
-                            break;
-                        }
-                        try {
-                            const parsed = JSON.parse(dataStr);
-                            const delta = parsed.choices?.[0]?.delta?.content;
-                            if (delta) {
-                                setMessages(prev => {
-                                    const newMessages = [...prev];
-                                    newMessages[newMessages.length - 1].text += delta;
-                                    return newMessages;
-                                });
-                            }
-                        } catch (e) { /* Ignore JSON parsing errors */ }
+                if (!response.ok || !response.body) {
+                    if (response.status === 401) {
+                         console.warn(`API key ending with ...${apiKey.slice(-4)} failed with auth error. Trying next key.`);
+                         break; // This key is bad, break from model loop to try next key.
                     }
+                    console.warn(`Model ${model} failed with status: ${response.statusText}`);
+                    continue; // Try the next model with the same key.
                 }
-                if (responseSent) break;
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let buffer = '';
+
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) {
+                        responseSent = true;
+                        break;
+                    }
+
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop() || '';
+
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            const dataStr = line.substring(6).trim();
+                            if (dataStr === '[DONE]') {
+                                responseSent = true;
+                                break;
+                            }
+                            try {
+                                const parsed = JSON.parse(dataStr);
+                                const delta = parsed.choices?.[0]?.delta?.content;
+                                if (delta) {
+                                    setMessages(prev => {
+                                        const newMessages = [...prev];
+                                        newMessages[newMessages.length - 1].text += delta;
+                                        return newMessages;
+                                    });
+                                }
+                            } catch (e) { /* Ignore JSON parsing errors */ }
+                        }
+                    }
+                    if (responseSent) break;
+                }
+            } catch (error) {
+                console.error(`Error with model ${model} and key ending in ...${apiKey.slice(-4)}:`, error);
             }
-        } catch (error) {
-            console.error(`Error with model ${model}:`, error);
         }
     }
+
 
     if (!responseSent) {
         setMessages(prev => {
