@@ -1,4 +1,28 @@
+# ==============================================
+# Robots.txt for Chessler Chess Club (Jaipur)
+# ==============================================
+
 User-agent: *
 Allow: /
 
+# 🟢 Main Sitemap for Chessler Chess Club
 Sitemap: https://chessler.vercel.app/sitemap.xml
+
+# 🟢 Additional Crawler Harmony
+# Ensure full crawling by all major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# 🟢 Notes:
+# This file is controlled by Chessler Chess Club.
+# No other platform, provider, company, or hosting service is referenced.
+# Full indexing is permitted across all pages of Chessler Chess Club.
