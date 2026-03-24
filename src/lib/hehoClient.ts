@@ -1,59 +1,120 @@
-
 const HEHO_API_URL = 'https://heho.vercel.app/api/v1/database/manage';
 const HEHO_API_KEY = import.meta.env.VITE_HEHO_API_KEY;
 
+type HehoAction = 'read' | 'add' | 'edit' | 'delete';
+type HehoPrimitive = string | number | boolean | null;
+type HehoRow = Record<string, unknown>;
+type HehoQuery = Record<string, HehoPrimitive | HehoPrimitive[]>;
+
 interface HehoRequest {
-  action: 'read' | 'add' | 'edit' | 'delete';
+  action: HehoAction;
   tableName: string;
-  data?: any;
-  id?: any;
-  query?: any;
+  data?: HehoRow;
+  id?: string | number;
+  query?: HehoQuery;
+  options?: {
+    limit?: number;
+    orderBy?: { column: string; ascending: boolean }[];
+  };
 }
 
-async function hehoRequest(payload: HehoRequest) {
+interface HehoResponse<TData = unknown> {
+  data: TData | null;
+  error: string | null;
+}
+
+const isHehoRow = (value: unknown): value is HehoRow =>
+  typeof value === 'object' && value !== null && !Array.isArray(value);
+
+async function hehoRequest<TData = unknown>(payload: HehoRequest): Promise<HehoResponse<TData>> {
   try {
     const response = await fetch(HEHO_API_URL, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${HEHO_API_KEY}`,
+        Authorization: `Bearer ${HEHO_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
     });
 
-    const result = await response.json();
+    const result = (await response.json()) as unknown;
 
     if (!response.ok) {
-      return { data: null, error: result.error || 'Heho API error' };
+      const errorMessage = isHehoRow(result) && typeof result.error === 'string'
+        ? result.error
+        : 'Heho API error';
+      return { data: null, error: errorMessage };
     }
 
-    // Heho returns data directly or in a data property depending on the action
-    // For 'read', it usually returns an array.
-    return { data: result, error: null };
-  } catch (error: any) {
-    return { data: null, error: error.message || 'Network error' };
+    return { data: result as TData, error: null };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Network error';
+    return { data: null, error: message };
+  }
+}
+
+class HehoReadChain {
+  private query: HehoQuery = {};
+  private options: NonNullable<HehoRequest['options']> = {};
+
+  constructor(private readonly tableName: string) {}
+
+  limit(n: number) {
+    this.options.limit = n;
+    return this;
+  }
+
+  order(column: string, options?: { ascending?: boolean }) {
+    const ascending = options?.ascending ?? true;
+    const existing = this.options.orderBy ?? [];
+    this.options.orderBy = [...existing, { column, ascending }];
+    return this;
+  }
+
+  eq(column: string, value: HehoPrimitive) {
+    this.query[column] = value;
+    return this;
+  }
+
+  async execute() {
+    return hehoRequest<unknown[]>({
+      action: 'read',
+      tableName: this.tableName,
+      query: Object.keys(this.query).length ? this.query : undefined,
+      options: Object.keys(this.options).length ? this.options : undefined,
+    });
+  }
+
+  then<TResult1 = HehoResponse<unknown[]>, TResult2 = never>(
+    onfulfilled?: ((value: HehoResponse<unknown[]>) => TResult1 | PromiseLike<TResult1>) | null,
+    onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null,
+  ) {
+    return this.execute().then(onfulfilled ?? undefined, onrejected ?? undefined);
   }
 }
 
 export const heho = {
   from: (tableName: string) => ({
-    select: (columns: string = '*') => ({
-      limit: (n: number) => hehoRequest({ action: 'read', tableName }), // Heho API might not support limit/select columns in this simple way, but we'll map it
-      then: (callback: any) => hehoRequest({ action: 'read', tableName }).then(callback),
-      // To match Supabase's async/await pattern:
-      async then(onfulfilled?: any, onrejected?: any) {
-          const res = await hehoRequest({ action: 'read', tableName });
-          return onfulfilled ? onfulfilled(res) : res;
+    select: (_columns = '*') => new HehoReadChain(tableName),
+    insert: async (rows: HehoRow[]) => {
+      const row = rows[0];
+      if (!row) {
+        return { data: null, error: 'Insert requires at least one row' };
       }
-    }),
-    insert: (data: any[]) => hehoRequest({ action: 'add', tableName, data: data[0] }),
-    update: (data: any) => ({
-      eq: (column: string, value: any) => hehoRequest({ action: 'edit', tableName, id: value, data })
+
+      return hehoRequest({ action: 'add', tableName, data: row });
+    },
+    update: (data: HehoRow) => ({
+      eq: (column: string, value: string | number) => {
+        void column;
+        return hehoRequest({ action: 'edit', tableName, id: value, data });
+      },
     }),
     delete: () => ({
-      eq: (column: string, value: any) => hehoRequest({ action: 'delete', tableName, id: value })
+      eq: (column: string, value: string | number) => {
+        void column;
+        return hehoRequest({ action: 'delete', tableName, id: value });
+      },
     }),
-    // Add a generic read for more complex queries if needed
-    read: (query?: any) => hehoRequest({ action: 'read', tableName, query })
-  })
+  }),
 };
