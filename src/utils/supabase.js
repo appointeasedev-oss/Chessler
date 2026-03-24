@@ -1,4 +1,3 @@
+import { supabase as hehoClient } from '../lib/supabaseClient';
 
-import { supabase as hehoSupabase } from '../lib/supabaseClient';
-
-export const supabase = hehoSupabase;
+export const supabase = hehoClient;
