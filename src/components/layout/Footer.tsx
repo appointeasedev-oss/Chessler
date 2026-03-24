@@ -109,14 +109,15 @@ const Footer = () => {
               © {footerData.copyright.showYear ? new Date().getFullYear() : ''} {footerData.copyright.text}
             </span>
             <span>
+              Designed by Sparrow AI Solutions • Powered by{" "}
               <a
-                href="https://www.instagram.com/sparrow_ai_solutions/"
+                href="https://heho.vercel.app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm hover:text-[#FFA500] transition-colors no-underline"
-                aria-label="Sparrow AI Solutions"
+                aria-label="HeHo"
               >
-                Developed by Sparrow AI Solutions
+                HeHo
               </a>
             </span>
           </p>
