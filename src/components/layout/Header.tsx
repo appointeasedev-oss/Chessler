@@ -92,6 +92,7 @@ const Header = () => {
         }`}
       style={{
         backgroundColor: 'var(--background)',
+        top: 'calc(var(--top-banner-height, 0px) + 6px)',
         transitionDelay: '0.1s'
       }}
     >
