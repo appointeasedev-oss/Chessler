@@ -9,6 +9,7 @@ interface ChatbotProps {
 }
 
 const Chatbot: React.FC<ChatbotProps> = ({ siteData }) => {
+  void siteData;
   const [isOpen, setIsOpen] = useState(false);
   const [isDesktop, setIsDesktop] = React.useState(window.innerWidth > 768);
 
