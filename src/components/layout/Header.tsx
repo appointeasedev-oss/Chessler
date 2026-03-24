@@ -92,6 +92,7 @@ const Header = () => {
         }`}
       style={{
         backgroundColor: 'var(--background)',
+        top: 'calc(var(--top-banner-height, 0px) + 6px)',
         transitionDelay: '0.1s'
       }}
     >
@@ -99,6 +100,21 @@ const Header = () => {
         ? 'px-4 sm:px-20 max-w-7xl'
         : 'px-4 sm:px-20 max-w-7xl'
         }`}>
+        <div className="mb-2 text-center">
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-secondary-foreground/80">
+            Designed by Sparrow AI Solutions • Powered by{" "}
+            <a
+              href="https://heho.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-orange-500 hover:text-orange-400 transition-colors"
+              aria-label="HeHo"
+            >
+              HeHo
+            </a>
+          </p>
+        </div>
+
         {/* Desktop Navigation - Rounded Pill Style */}
         <div className="hidden md:flex justify-center">
           <nav className={`bg-secondary/95 backdrop-blur-sm rounded-full shadow-lg transition-all duration-400 ease-out ${isScrolled ? 'px-4 py-2' : 'px-6 py-3'
