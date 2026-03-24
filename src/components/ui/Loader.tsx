@@ -12,7 +12,7 @@ const Loader: React.FC<LoaderProps> = ({ visible }) => {
   const svgKey = useMemo(() => getRandomKey(), []);
   if (!visible) return null;
   return (
-    <div className="loader-overlay" style={{ width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}>
+    <div className="loader-overlay" style={{ position: 'fixed', inset: 0, width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff', zIndex: 80 }}>
       <style>{`
         .svg-elem-1 {
           animation: slide-in-bottom 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
