@@ -1,36 +1,80 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabaseClient';
+
+const PANTRY_ID = '83203a8c-34e9-435d-9112-17a934c03cb9';
+const BASKET_CANDIDATES = ['top-banner', 'banner', 'announcement'];
 
 const TopBar = () => {
-  const [announcement, setAnnouncement] = useState<{ id: number; message: string } | null>(null);
+  const [bannerText, setBannerText] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchAnnouncement = async () => {
-      const { data, error } = await supabase
-        .from('announcements')
-        .select('id, message')
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .single();
-
-      if (error && error.code !== 'PGRST116') { // PGRST116 means no rows found, which is not an error here
-        console.error('Error fetching announcement:', error);
-      } else {
-        setAnnouncement(data);
+    const readBannerText = (payload: unknown): string | null => {
+      if (!payload || typeof payload !== 'object') {
+        return null;
       }
+
+      const data = payload as Record<string, unknown>;
+      const possibleText = data.text ?? data.message ?? data.bannerText ?? null;
+
+      if (typeof possibleText !== 'string') {
+        return null;
+      }
+
+      const trimmed = possibleText.trim();
+      if (!trimmed || trimmed.toLowerCase() === 'null') {
+        return null;
+      }
+
+      return trimmed;
     };
 
-    fetchAnnouncement();
+    const fetchBanner = async () => {
+      for (const basket of BASKET_CANDIDATES) {
+        try {
+          const response = await fetch(`https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/${basket}`);
+
+          if (!response.ok) {
+            continue;
+          }
+
+          const payload = await response.json();
+          const text = readBannerText(payload);
+
+          if (text) {
+            setBannerText(text);
+            return;
+          }
+        } catch (error) {
+          console.error(`Error fetching pantry basket "${basket}":`, error);
+        }
+      }
+
+      setBannerText(null);
+    };
+
+    fetchBanner();
   }, []);
 
-  if (!announcement) {
+  if (!bannerText) {
     return null;
   }
 
   return (
-    <div className="bg-black text-white text-center py-2 px-4">
-      <p className="text-sm">{announcement.message}</p>
-    </div>
+    <>
+      <style>{`
+        @keyframes banner-marquee {
+          0% { transform: translateX(100%); }
+          100% { transform: translateX(-100%); }
+        }
+      `}</style>
+      <div className="bg-orange-500 py-2 overflow-hidden whitespace-nowrap">
+        <div
+          className="inline-block min-w-full text-center text-sm font-bold text-white"
+          style={{ animation: 'banner-marquee 18s linear infinite' }}
+        >
+          {bannerText}
+        </div>
+      </div>
+    </>
   );
 };
 
